@@ -47,7 +47,7 @@
     "developer": "Flipbox Digital",
     "developerUrl": "https://www.flipboxdigital.com",
     "changelogUrl": "https://raw.githubusercontent.com/flipboxfactory/craft-salesforce/master/CHANGELOG.md",
-    "downloadUrl": "https://github.com/flipboxfactory/craft-salesforce/archive/master.zip",
+    "documentationUrl": "https://salesforce.flipboxfactory.com",
     "hasCpSection": true,
     "hasCpSettings": true,
     "schemaVersion": "1.1.0"
