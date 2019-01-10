@@ -1,0 +1,36 @@
+{% import "_includes/forms" as forms %}
+
+{% set rows = [] %}
+{% set variables = record.settings.variables ?? [] %}
+{% for key, value in variables %}
+    {% set rows = rows|merge([{
+        key: {
+            value: key
+        },
+        value: {
+            value: value
+        }
+    }]) %}
+{% endfor %}
+
+{{ forms.editableTableField({
+    label: "Variables"|t('app'),
+    id: 'variables',
+    name: 'variables',
+    cols: {
+        key: {
+            type: 'singleline',
+            heading: "Key"|t('salesforce'),
+            info: "The variable key, used to dynamically construct the query."|t('salesforce'),
+            code: true
+        },
+        value: {
+            type: 'singleline',
+            heading: "Value"|t('salesforce'),
+            info: "The default value, which can be overwritten."|t('salesforce'),
+            code: true
+        },
+    },
+    rows: rows,
+    errors: []
+}) }}

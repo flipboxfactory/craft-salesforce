@@ -1,0 +1,33 @@
+{% extends "salesforce/_cp/_layout" %}
+
+{% set content %}
+    <table id="queries" class="data fullwidth collapsible">
+        <thead>
+        <th scope="col">{{ "Name"|t('salesforce') }}</th>
+        <th scope="col">{{ "Handle"|t('salesforce') }}</th>
+        </thead>
+        <tbody>
+        {% if queries|length %}
+            {% for query in queries %}
+                <tr data-id="{{ query.id }}" data-name="{{ query.name }}">
+                    <th scope="row"
+                        data-title="{{ 'Name'|t('salesforce') }}">
+                        <a href="{{ url(baseCpPath~'/'~query.id) }}">
+                            {{ query.name }}
+                        </a>
+                    </th>
+                    <td data-title="{{ 'Handle'|t('salesforce') }}">
+                        <code>{{ query.handle }}</code>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="3">
+                    {{ "No queries exist yet."|t('salesforce') }}
+                </td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+{% endset %}

@@ -1,0 +1,55 @@
+{
+  "name": "flipboxfactory/craft-salesforce",
+  "description": "Salesforce Integration for Craft CMS",
+  "version": "1.0.0",
+  "type": "craft-plugin",
+  "license": "proprietary",
+  "keywords": [
+    "cms",
+    "craftcms",
+    "salesforce",
+    "force.com",
+    "yii2"
+  ],
+  "require": {
+    "craftcms/cms": "^3.0.14",
+    "flipboxdigital/salesforce": "^3.0",
+    "flipboxfactory/craft-integration": "^2.0",
+    "flipboxfactory/craft-psr16": "^1.0",
+    "flipboxfactory/craft-psr3": "^1.0"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.2",
+    "codeception/codeception": "^2.4",
+    "vlucas/phpdotenv": "^2.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "flipbox\\craft\\salesforce\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "flipbox\\craft\\salesforce\\tests\\": "tests/src/"
+    }
+  },
+  "support": {
+    "email": "support@flipboxfactory.com",
+    "issues": "https://github.com/flipboxfactory/craft-salesforce/issues?state=open",
+    "source": "https://github.com/flipboxfactory/craft-salesforce",
+    "docs": "https://github.com/flipboxfactory/craft-salesforce",
+    "rss": "https://github.com/flipboxfactory/craft-salesforce/commits/master.atom"
+  },
+  "extra": {
+    "name": "Salesforce",
+    "handle": "salesforce",
+    "class": "flipbox\\craft\\salesforce\\Force",
+    "developer": "Flipbox Digital",
+    "developerUrl": "https://www.flipboxdigital.com",
+    "changelogUrl": "https://raw.githubusercontent.com/flipboxfactory/craft-salesforce/master/CHANGELOG.md",
+    "downloadUrl": "https://github.com/flipboxfactory/craft-salesforce/archive/master.zip",
+    "hasCpSection": true,
+    "hasCpSettings": true,
+    "schemaVersion": "1.1.0"
+  }
+}

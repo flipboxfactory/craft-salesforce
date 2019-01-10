@@ -1,0 +1,131 @@
+{% extends "salesforce/_cp/_layout" %}
+{% import "_includes/forms" as forms %}
+{% set builder = query.criteria.query %}
+
+{% do view.registerJsFile("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js") %}
+{% do view.registerCssFile("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css") %}
+{% js %}
+    hljs.initHighlightingOnLoad();
+{% endjs %}
+{% css %}
+    .hljs {
+        background: none;
+        padding: 0;
+    }
+    .breakall {
+        word-break: break-all;
+    }
+{% endcss %}
+
+{% block actionButton %}
+    <div class="btngroup submit right">
+        <input type="submit" class="btn submit" value="{{ 'Save'|t('app') }}">
+        <div class="btn submit menubtn"></div>
+        <div class="menu">
+            <ul role="listbox">
+                <li>
+                    <a class="formsubmit"
+                       data-redirect="{{ continueEditingUrl|hash }}">
+                        {{ "Save and continue editing"|t('app') }}
+                        {{ forms.optionShortcutLabel('S') }}
+                    </a>
+                </li>
+                <li>
+                    <a class="formsubmit"
+                       data-redirect="{{ baseCpPath~'/new'|hash }}">
+                        {{ "Save and add another"|t('app') }}
+                    </a>
+                </li>
+            </ul>
+            {% if query.id %}
+                <hr/>
+                <ul role="listbox">
+                    <li>
+                        <a class="formsubmit error"
+                           data-action="{{ baseActionPath }}/delete"
+                           data-confirm="{{ 'Are you sure you want to delete this organization type?'|t('salesforce') }}"
+                           data-redirect="{{ baseCpPath|hash }}"
+                           role="option"
+                           tabindex="-1">{{ "Delete"|t('app') }}</a>
+                    </li>
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <input type="hidden" name="action"
+           value="{{ baseActionPath }}/{% if query.id %}update{% else %}create{% endif %}">
+    {% if query.id %}<input type="hidden" name="query" value="{{ query.id }}">{% endif %}
+    <input type="hidden" name="class" value="{{ className(query) }}">
+    {{ redirectInput(baseCpPath) }}
+
+    <div class="soql">
+        {{ forms.textField({
+            first: true,
+            label: "Name"|t('salesforce'),
+            instructions: "What this query will be called in the CP."|t('salesforce'),
+            id: 'name',
+            name: 'name',
+            value: query.name,
+            errors: query.getErrors('name'),
+            autofocus: true,
+            required: true,
+            translatable: true
+        }) }}
+
+        {{ forms.textField({
+            label: "Handle"|t('salesforce'),
+            instructions: "How you’ll refer to this query in the templates."|t('salesforce'),
+            id: 'handle',
+            class: 'code',
+            name: 'handle',
+            value: query.handle,
+            errors: query.getErrors('handle'),
+            required: true
+        }) }}
+
+        {{ forms.textareaField({
+            label: "Query"|t('salesforce'),
+            instructions: "The raw query.  You may also include twig markup to represent dynamic variables."|t('salesforce'),
+            id: 'soql',
+            class: 'code',
+            name: 'soql',
+            value: query.soql ?? '',
+            errors: query.getErrors('soql'),
+            required: true,
+            rows: 12
+        }) }}
+
+        {% namespace 'settings' %}
+            {{ query.settingsHtml()|raw }}
+        {% endnamespace %}
+
+        <input type="submit" class="btn preview" value="{{ 'Preview Query'|t('app') }}">
+        <div class="spinner hidden"></div>
+
+        <div id="query-preview" style="display: none;">
+            <br /><br />
+            <div id="query-soql"></div>
+            <hr/>
+            <pre><code id="query-results" class="json"></code></pre>
+        </div>
+    </div>
+{% endblock %}
+{% js %}
+    var query = new Craft.ForceQuery(
+    '#{{ 'main-form'|namespaceInputId|e('js') }}',
+    {
+        onAfterQuery: function() {
+            $('#query-results').each(function(i, e) {hljs.highlightBlock(e)});
+        }
+    }
+    );
+{% endjs %}
+
+{% if query is not defined or not query.handle %}
+    {% js %}
+        new Craft.HandleGenerator('#name', '#handle');
+    {% endjs %}
+{% endif %}
