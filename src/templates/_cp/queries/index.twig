@@ -1,5 +1,12 @@
 {% extends "salesforce/_cp/_layout" %}
 
+{% block actionButton %}
+    <div class="buttons right">
+        <a href="{{ url(continueEditingUrl ~ '/new') }}"
+           class="btn submit add icon">{{ "New query"|t('salesforce') }}</a>
+    </div>
+{% endblock %}
+
 {% set content %}
     <table id="queries" class="data fullwidth collapsible">
         <thead>
