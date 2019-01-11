@@ -1,5 +1,17 @@
 Changelog
 =========
+
+## Unreleased
+### Fixed
+- Default connection handle
+- Added button to create new query from index view
+
+## 1.0.0 - 2019-01-10
+### Changed
+- Supporting new dependencies
+- Namespacing
+
+
 ## 1.0.0-rc.3 - 2018-10-09
 ### Added
 - Element Populate transformer can accept a key
