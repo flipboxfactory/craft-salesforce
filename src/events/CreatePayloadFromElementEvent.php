@@ -20,7 +20,7 @@ class CreatePayloadFromElementEvent extends Event
     /**
      * @var array
      */
-    public $payload = [];
+    private $payload = [];
 
     /**
      * @param array $payload
