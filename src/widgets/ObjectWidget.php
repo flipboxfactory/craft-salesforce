@@ -45,7 +45,7 @@ class ObjectWidget extends Widget
      */
     public static function iconPath()
     {
-        $path = Craft::getAlias("@flipbox/force/icon-mask.svg");
+        $path = Craft::getAlias("@flipbox/craft/salesforce/icon-mask.svg");
         return is_string($path) ? $path : null;
     }
 
