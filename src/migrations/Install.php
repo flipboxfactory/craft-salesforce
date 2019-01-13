@@ -66,6 +66,7 @@ class Install extends Migration
             'id' => $this->primaryKey(),
             'handle' => $this->string()->notNull(),
             'name' => $this->string()->notNull(),
+            'soql' => $this->text(),
             'class' => $this->string()->notNull(),
             'settings' => $this->string(),
             'dateCreated' => $this->dateTime()->notNull(),
