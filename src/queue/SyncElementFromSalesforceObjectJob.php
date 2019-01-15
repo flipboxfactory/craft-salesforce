@@ -9,7 +9,12 @@
 namespace flipbox\craft\salesforce\queue;
 
 use Craft;
+use craft\base\Element;
 use craft\base\ElementInterface;
+use craft\helpers\ArrayHelper;
+use flipbox\craft\ember\helpers\SiteHelper;
+use flipbox\craft\integration\queries\IntegrationAssociationQuery;
+use flipbox\craft\integration\records\IntegrationAssociation;
 use flipbox\craft\salesforce\fields\Objects;
 use flipbox\craft\salesforce\transformers\PopulateElementErrorsFromResponse;
 use flipbox\craft\salesforce\transformers\PopulateElementFromResponse;
@@ -21,6 +26,11 @@ use Flipbox\Salesforce\Resources\SObject;
 class SyncElementFromSalesforceObjectJob extends AbstractSyncElementJob
 {
     use ResolveObjectIdFromElementTrait;
+
+    /**
+     * @var string|null
+     */
+    public $objectId;
 
     /**
      * @var string
@@ -43,13 +53,15 @@ class SyncElementFromSalesforceObjectJob extends AbstractSyncElementJob
     {
         return $this->syncDown(
             $this->getElement(),
-            $this->getField()
+            $this->getField(),
+            $this->objectId
         );
     }
 
     /**
      * @param ElementInterface $element
      * @param Objects $field
+     * @param string $objectId
      * @return bool
      * @throws \Throwable
      * @throws \craft\errors\ElementNotFoundException
@@ -59,10 +71,14 @@ class SyncElementFromSalesforceObjectJob extends AbstractSyncElementJob
      */
     public function syncDown(
         ElementInterface $element,
-        Objects $field
+        Objects $field,
+        string $objectId = null
     ): bool {
-        /** @var string $id */
-        if (null === ($id = $this->resolveObjectIdFromElement($element, $field))) {
+
+        $id = $objectId ?: $this->resolveObjectIdFromElement($element, $field);
+
+        /** @var string $objectId */
+        if (null === $id) {
             return false;
         }
 
@@ -70,7 +86,7 @@ class SyncElementFromSalesforceObjectJob extends AbstractSyncElementJob
             $field->getConnection(),
             $field->getCache(),
             $field->object,
-            $id
+            $objectId
         );
 
         if (($response->getStatusCode() < 200 || $response->getStatusCode() > 300)) {
@@ -80,7 +96,7 @@ class SyncElementFromSalesforceObjectJob extends AbstractSyncElementJob
                     $response,
                     $element,
                     $field,
-                    $id
+                    $objectId
                 ]
             );
             return false;
@@ -93,11 +109,55 @@ class SyncElementFromSalesforceObjectJob extends AbstractSyncElementJob
                     $response,
                     $element,
                     $field,
-                    $id
+                    $objectId
                 ]
             );
         }
 
+        if ($objectId !== null) {
+            $this->addAssociation(
+                $element,
+                $field,
+                $id
+            );
+        }
+
         return Craft::$app->getElements()->saveElement($element);
+    }
+
+    /**
+     * @param ElementInterface|Element $element
+     * @param Objects $field
+     * @param string $id
+     */
+    protected function addAssociation(
+        ElementInterface $element,
+        Objects $field,
+        string $id
+    ) {
+        /** @var IntegrationAssociation $recordClass */
+        $recordClass = $field::recordClass();
+
+        /** @var IntegrationAssociationQuery $associations */
+        $associationQuery = $element->getFieldValue($field->handle);
+        $associations = ArrayHelper::index($associationQuery->all(), 'objectId');
+
+        if (!array_key_exists($id, $associations)) {
+            $association = new $recordClass([
+                'element' => $element,
+                'field' => $field,
+                'siteId' => SiteHelper::ensureSiteId($element->siteId),
+                'objectId' => $id
+            ]);
+
+            $associations = array_merge(
+                $associationQuery->all(),
+                [
+                    $association
+                ]
+            );
+
+            $associationQuery->setCachedResult(array_values($associations));
+        }
     }
 }
