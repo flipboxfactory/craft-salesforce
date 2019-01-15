@@ -76,8 +76,6 @@ class SyncElementFromSalesforceObjectJob extends AbstractSyncElementJob
     ): bool {
 
         $id = $objectId ?: $this->resolveObjectIdFromElement($element, $field);
-
-        /** @var string $objectId */
         if (null === $id) {
             return false;
         }
@@ -86,7 +84,7 @@ class SyncElementFromSalesforceObjectJob extends AbstractSyncElementJob
             $field->getConnection(),
             $field->getCache(),
             $field->object,
-            $objectId
+            $id
         );
 
         if (($response->getStatusCode() < 200 || $response->getStatusCode() > 300)) {
@@ -96,7 +94,7 @@ class SyncElementFromSalesforceObjectJob extends AbstractSyncElementJob
                     $response,
                     $element,
                     $field,
-                    $objectId
+                    $id
                 ]
             );
             return false;
@@ -109,7 +107,7 @@ class SyncElementFromSalesforceObjectJob extends AbstractSyncElementJob
                     $response,
                     $element,
                     $field,
-                    $objectId
+                    $id
                 ]
             );
         }
