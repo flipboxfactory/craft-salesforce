@@ -1,16 +1,18 @@
 Changelog
 =========
 
-## Unreleased
-### Fixed
-- Default connection handle
-- Added button to create new query from index view
+## 1.0.1 - 2019-01-15
+### Changed
+- Sync jobs can accept an objectId rather than trying to resolve one.
+
+### Removed
+- Checking if field is associated to element prior to syncing as it causes unexpected errors.
+
 
 ## 1.0.0 - 2019-01-10
 ### Changed
 - Supporting new dependencies
 - Namespacing
-
 
 ## 1.0.0-rc.3 - 2018-10-09
 ### Added
