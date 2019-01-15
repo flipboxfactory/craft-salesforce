@@ -26,6 +26,7 @@ abstract class AbstractSyncFrom extends Action
     /**
      * @param ElementInterface $element
      * @param Objects $field
+     * @param string|null $objectId
      * @return ElementInterface|mixed
      * @throws \Throwable
      * @throws \craft\errors\ElementNotFoundException
@@ -36,14 +37,15 @@ abstract class AbstractSyncFrom extends Action
      */
     protected function runInternal(
         ElementInterface $element,
-        Objects $field
+        Objects $field,
+        string $objectId = null
     ) {
         // Check access
-        if (($access = $this->checkAccess($element, $field)) !== true) {
+        if (($access = $this->checkAccess($element, $field, $objectId)) !== true) {
             return $access;
         }
 
-        if (false === $this->performAction($element, $field)) {
+        if (false === $this->performAction($element, $field, $objectId)) {
             return $this->handleFailResponse($element);
         }
 
@@ -53,6 +55,7 @@ abstract class AbstractSyncFrom extends Action
     /**
      * @param ElementInterface $element
      * @param Objects $field
+     * @param string|null $objectId
      * @return bool
      * @throws \Throwable
      * @throws \craft\errors\ElementNotFoundException
@@ -62,11 +65,13 @@ abstract class AbstractSyncFrom extends Action
      */
     protected function performAction(
         ElementInterface $element,
-        Objects $field
+        Objects $field,
+        string $objectId = null
     ) {
         $job = new SyncElementFromSalesforceObjectJob([
             'element' => $element,
-            'field' => $field
+            'field' => $field,
+            'objectId' => $objectId
         ]);
 
         return $job->execute(Craft::$app->getQueue());

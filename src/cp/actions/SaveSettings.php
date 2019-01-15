@@ -9,10 +9,10 @@
 namespace flipbox\craft\salesforce\cp\actions;
 
 use Craft;
+use flipbox\craft\ember\actions\models\CreateModel;
 use flipbox\craft\salesforce\Force;
 use flipbox\craft\salesforce\models\Settings;
 use yii\base\Model;
-use flipbox\craft\ember\actions\models\CreateModel;
 
 /**
  * @author Flipbox Factory <hello@flipboxfactory.com>

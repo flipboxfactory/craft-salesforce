@@ -10,12 +10,14 @@ namespace flipbox\craft\salesforce\actions\widgets;
 
 use Craft;
 use craft\base\ElementInterface;
+use flipbox\craft\ember\helpers\SiteHelper;
 use flipbox\craft\integration\actions\ResolverTrait;
 use flipbox\craft\integration\fields\Integrations;
 use flipbox\craft\integration\queries\IntegrationAssociationQuery;
 use flipbox\craft\integration\records\IntegrationAssociation;
 use flipbox\craft\salesforce\cp\actions\sync\AbstractSyncFrom;
 use flipbox\craft\salesforce\fields\Objects;
+use flipbox\craft\salesforce\Force;
 use yii\web\HttpException;
 
 /**
@@ -48,12 +50,7 @@ class SyncFrom extends AbstractSyncFrom
         /** @var ElementInterface $element */
         $element = $this->autoResolveElement($field, $id, $elementType, $siteId);
 
-        /** @var IntegrationAssociationQuery $query */
-        if (null === ($query = $element->getFieldValue($field->handle))) {
-            throw new HttpException(400, 'Invalid value');
-        }
-
-        return $this->runInternal($element, $field);
+        return $this->runInternal($element, $field, $id);
     }
 
     /**
@@ -74,20 +71,21 @@ class SyncFrom extends AbstractSyncFrom
 
         /** @var IntegrationAssociationQuery $query */
         $query = $recordClass::find();
-        $query->fieldId($field->id)
-            ->objectId($id);
-
-        if (null !== $siteId) {
-            $query->siteId($siteId);
-        }
-
-        $query->select(['elementId']);
+        $query->select(['elementId'])
+            ->fieldId($field->id)
+            ->objectId($id)
+            ->siteId(SiteHelper::ensureSiteId($siteId));
 
         if (null !== ($elementId = $query->scalar())) {
             try {
                 $element = $this->resolveElement($elementId);
             } catch (HttpException $e) {
-                // TODO - log this
+                Force::warning(sprintf(
+                    "Unable to find element '%s' associted to Salesforce object '%s' Id '%s'",
+                    $elementId,
+                    $field->object,
+                    $id
+                ));
             }
         }
 
