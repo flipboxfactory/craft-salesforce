@@ -76,7 +76,7 @@ class SyncFrom extends AbstractSyncFrom
             ->objectId($id)
             ->siteId(SiteHelper::ensureSiteId($siteId));
 
-        if (null !== ($elementId = $query->scalar())) {
+        if ($elementId = $query->scalar()) {
             try {
                 $element = $this->resolveElement($elementId);
             } catch (HttpException $e) {
