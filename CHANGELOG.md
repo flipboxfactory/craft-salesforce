@@ -1,5 +1,8 @@
 Changelog
 =========
+## 1.0.2 - 2019-01-29
+### Fixed
+- Widget would not create a new element if one was not found.
 
 ## 1.0.1 - 2019-01-15
 ### Changed
