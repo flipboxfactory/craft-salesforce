@@ -16,7 +16,8 @@ use flipbox\craft\ember\records\ActiveRecordWithId;
 use flipbox\craft\salesforce\queries\SOQLQuery;
 use flipbox\craft\salesforce\validators\QueryBuilderValidator;
 use flipbox\craft\salesforce\criteria\QueryCriteria;
-use Flipbox\Salesforce\Query\QueryBuilderInterface;
+use Flipbox\Salesforce\Query\DynamicQueryBuilderInterface;
+use Psr\Http\Message\ResponseInterface;
 use yii\validators\UniqueValidator;
 
 /**
@@ -28,7 +29,7 @@ use yii\validators\UniqueValidator;
  * @property string $class
  * @property string $soql
  */
-class SOQL extends ActiveRecordWithId implements QueryBuilderInterface
+class SOQL extends ActiveRecordWithId implements DynamicQueryBuilderInterface
 {
     use HandleRulesTrait;
 
@@ -262,8 +263,42 @@ class SOQL extends ActiveRecordWithId implements QueryBuilderInterface
 
 
     /*******************************************
+     * RETRIEVE QUERY
+     *******************************************/
+
+    /**
+     * @param array $criteria
+     * @param array $config
+     * @return ResponseInterface
+     * @throws \flipbox\craft\ember\exceptions\RecordNotFoundException
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function fetch(array $criteria = [], array $config = []): ResponseInterface
+    {
+        return (new QueryCriteria([
+            'query' => $this->build()
+        ]))->fetch($criteria, $config);
+    }
+
+    /*******************************************
      * BUILDER INTERFACE
      *******************************************/
+
+    /**
+     * @return array
+     */
+    public function getVariables(): array
+    {
+        return (array)($this->getSettingsValue('variables') ?: []);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setVariables(array $variables = [])
+    {
+        return $this->setSettingsValue('variables', $variables);
+    }
 
     /**
      * @return string
@@ -276,7 +311,7 @@ class SOQL extends ActiveRecordWithId implements QueryBuilderInterface
 
         return Craft::$app->getView()->renderString(
             $soql,
-            (array)($this->getSettingsValue('variables') ?: [])
+            $this->getVariables()
         );
     }
 

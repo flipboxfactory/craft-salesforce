@@ -34,7 +34,8 @@ class Force extends ServiceLocator
         parent::init();
 
         $this->setComponents([
-            'cache' => ForcePlugin::getInstance()->getCache()
+            'cache' => ForcePlugin::getInstance()->getCache(),
+            'criteria' => Criteria::class
         ]);
     }
 

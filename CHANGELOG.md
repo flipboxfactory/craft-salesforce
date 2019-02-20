@@ -1,5 +1,10 @@
 Changelog
 =========
+## Unreleased
+### Added
+- Criteria template variables to create criteria used to access date `craft.salesforce.criteria.query`, `craft.salesforce.criteria.object`, `craft.salesforce.criteria.search` 
+- `\flipbox\craft\salesforce\records\SOQL::fetch()` to execute the SOQL query API call.
+
 ## 1.0.2 - 2019-01-29
 ### Fixed
 - Widget would not create a new element if one was not found.

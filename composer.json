@@ -1,7 +1,7 @@
 {
   "name": "flipboxfactory/craft-salesforce",
   "description": "Salesforce Integration for Craft CMS",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "craft-plugin",
   "license": "proprietary",
   "keywords": [
@@ -13,7 +13,7 @@
   ],
   "require": {
     "craftcms/cms": "^3.0.14",
-    "flipboxdigital/salesforce": "^3.0",
+    "flipboxdigital/salesforce": "^3.2",
     "flipboxfactory/craft-ember": "^2.1",
     "flipboxfactory/craft-integration": "^2.0",
     "flipboxfactory/craft-psr16": "^1.0",
