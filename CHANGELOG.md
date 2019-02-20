@@ -1,6 +1,6 @@
 Changelog
 =========
-## Unreleased
+## 1.0.3 - 2019-02-20
 ### Added
 - Criteria template variables to create criteria used to access date `craft.salesforce.criteria.query`, `craft.salesforce.criteria.object`, `craft.salesforce.criteria.search` 
 - `\flipbox\craft\salesforce\records\SOQL::fetch()` to execute the SOQL query API call.
