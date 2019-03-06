@@ -12,9 +12,9 @@
     {{ redirectInput(baseCpPath) }}
 
     {% set connecitonOptions = {(null): '-- Select Connection --'|t('salesforce')} %}
-    {% for connection in craft.salesforce.connections.all %}
+    {% for connection in connections %}
         {% set connecitonOptions = connecitonOptions|merge({
-            (connection.handle): connection.handle
+            (connection.handle): connection.name
         }) %}
     {% endfor %}
 

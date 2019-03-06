@@ -8,6 +8,7 @@
 
 namespace flipbox\craft\salesforce\cp\controllers\settings\view;
 
+use flipbox\craft\salesforce\records\Connection;
 use flipbox\craft\salesforce\web\assets\base\Base;
 use yii\web\Response;
 
@@ -38,6 +39,7 @@ class GeneralController extends AbstractController
 
         $this->view->registerAssetBundle(Base::class);
 
+        $variables['connections'] = Connection::find()->all();
         $variables['fullPageForm'] = true;
 
         return $this->renderTemplate(

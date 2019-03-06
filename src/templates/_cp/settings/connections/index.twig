@@ -10,26 +10,35 @@
 {% set content %}
     <table id="connections" class="data fullwidth collapsible">
         <thead>
-        <th scope="col">{{ "Type"|t('salesforce') }}</th>
-        <th scope="col">{{ "Handle"|t('salesforce') }}</th>
-        <th scope="col">{{ "Default"|t('salesforce') }}</th>
+            <th scope="col">{{ "Name"|t('salesforce') }}</th>
+            <th scope="col">{{ "Handle"|t('salesforce') }}</th>
+            <th scope="col">{{ "Version"|t('salesforce') }}</th>
+            <th scope="col">{{ "Type"|t('salesforce') }}</th>
+            <th scope="col">{{ "Default"|t('salesforce') }}</th>
         </thead>
         <tbody>
         {% if connections|length %}
-            {% for connection in connections %}
-                <tr data-id="{{ connection.id }}" data-name="{{ connection.handle }}">
-                    <th scope="row"
-                        data-title="{{ 'Type'|t('salesforce') }}">
-                        <a href="{{ url(baseCpPath~'/'~connection.id) }}">
-                            {{ attribute(types, connection.class).displayName() ?? '' }}
+            {% for handle, record in connections %}
+                {% set connection = record.connection %}
+                <tr data-id="{{ record.id }}" data-name="{{ record.handle }}">
+                    <th scope="row" data-title="{{ 'Type'|t('salesforce') }}">
+                        <span class="status{% if record.enabled %} enabled{% endif %}"></span>
+                        <a href="{{ url(baseCpPath~'/'~record.id) }}">
+                            {{ record.name }}
                         </a>
                     </th>
-
+                    <th data-title="{{ 'Handle'|t('salesforce') }}">
+                        <code>{{ record.handle }}</code>
+                    </th>
+                    <td data-title="{{ 'HubId'|t('salesforce') }}">
+                        {{ connection.version }}
+                    </td>
                     <td data-title="{{ 'Handle'|t('salesforce') }}">
-                        <code>{{ connection.handle }}</code>
+                        {{ connection.displayName() }}
                     </td>
                     <td data-title="{{ 'Default'|t('salesforce') }}">
-                        <span class="status{% if settings.defaultConnection == connection.handle %} enabled{% endif %}"></span>                    </td>
+                        <span class="status{% if settings.defaultConnection == record.handle %} enabled{% endif %}"></span>
+                    </td>
                 </tr>
             {% endfor %}
         {% else %}

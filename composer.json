@@ -1,7 +1,7 @@
 {
   "name": "flipboxfactory/craft-salesforce",
   "description": "Salesforce Integration for Craft CMS",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "type": "craft-plugin",
   "license": "proprietary",
   "keywords": [
@@ -51,6 +51,6 @@
     "documentationUrl": "https://salesforce.flipboxfactory.com",
     "hasCpSection": true,
     "hasCpSettings": true,
-    "schemaVersion": "1.1.0"
+    "schemaVersion": "1.2.0"
   }
 }
