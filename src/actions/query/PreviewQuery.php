@@ -8,9 +8,9 @@
 
 namespace flipbox\craft\salesforce\actions\query;
 
+use flipbox\craft\salesforce\criteria\QueryCriteria;
 use flipbox\craft\salesforce\records\SOQL;
 use flipbox\craft\salesforce\transformers\DynamicModelResponse;
-use flipbox\craft\salesforce\criteria\QueryCriteria;
 use yii\base\DynamicModel;
 use yii\db\ActiveRecord;
 use yii\web\HttpException;

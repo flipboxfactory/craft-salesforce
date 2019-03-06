@@ -8,18 +8,22 @@
 
 namespace flipbox\craft\salesforce\events;
 
-use Flipbox\Salesforce\Connections\ConnectionInterface;
+use flipbox\craft\salesforce\connections\SavableConnectionInterface;
 use yii\base\Event;
 
+/**
+ * @author Flipbox Factory <hello@flipboxfactory.com>
+ * @since 1.0.0
+ */
 class RegisterConnectionsEvent extends Event
 {
     /**
      * Event to register connections
      */
-    const REGISTER_CONNECTIONS = 'registerConnections';
+    const REGISTER_CONNECTIONS = 'registerConnectionTypes';
 
     /**
-     * @var array|ConnectionInterface[]
+     * @var SavableConnectionInterface[]
      */
     public $connections = [];
 }

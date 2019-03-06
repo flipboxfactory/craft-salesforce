@@ -10,10 +10,10 @@ namespace flipbox\craft\salesforce\records;
 
 use Craft;
 use flipbox\craft\integration\records\IntegrationAssociation;
+use flipbox\craft\salesforce\criteria\ObjectCriteria;
 use flipbox\craft\salesforce\fields\Objects;
 use flipbox\craft\salesforce\Force;
 use flipbox\craft\salesforce\migrations\ObjectAssociations;
-use flipbox\craft\salesforce\criteria\ObjectAccessorCriteria;
 
 /**
  * @author Flipbox Factory <hello@flipboxfactory.com>
@@ -91,7 +91,7 @@ class ObjectAssociation extends IntegrationAssociation
             return null;
         }
 
-        $resource = new ObjectAccessorCriteria([
+        $resource = new ObjectCriteria([
             'connection' => $field->getConnection(),
             'cache' => $field->getCache()
         ]);

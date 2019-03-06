@@ -47,7 +47,7 @@ class CreateUpsertPayloadFromElement extends BaseObject
         ]);
 
         $name = $event::eventName(
-            $field->object,
+            $field->handle,
             $this->action
         );
 

@@ -34,6 +34,7 @@ use yii\base\Event;
  * @method SettingsModel getSettings()
  *
  * @property services\Cache $cache
+ * @property services\Connections $connections
  * @property Logger $psr3Logger
  */
 class Force extends Plugin
@@ -50,6 +51,7 @@ class Force extends Plugin
         // Components
         $this->setComponents([
             'cache' => services\Cache::class,
+            'connections' => services\Connections::class,
             'psr3Logger' => function () {
                 return Craft::createObject([
                     'class' => Logger::class,
@@ -173,6 +175,7 @@ class Force extends Plugin
         Craft::$app->end();
     }
 
+
     /*******************************************
      * SERVICES
      *******************************************/
@@ -186,6 +189,17 @@ class Force extends Plugin
         /** @noinspection PhpUnhandledExceptionInspection */
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->get('cache');
+    }
+
+    /**
+     * @noinspection PhpDocMissingThrowsInspection
+     * @return services\Connections
+     */
+    public function getConnections(): services\Connections
+    {
+        /** @noinspection PhpUnhandledExceptionInspection */
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->get('connections');
     }
 
     /**
@@ -214,6 +228,28 @@ class Force extends Plugin
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->getModule('cp');
     }
+
+
+    /*******************************************
+     * TRANSLATE
+     *******************************************/
+
+    /**
+     * Translates a message to the specified language.
+     *
+     * This is a shortcut method of [[\Craft::t()]].
+     *     *
+     * @param string $message the message to be translated.
+     * @param array $params the parameters that will be used to replace the corresponding placeholders in the message.
+     * @param string $language the language code (e.g. `en-US`, `en`). If this is null, the current
+     * [[\yii\base\Application::language|application language]] will be used.
+     * @return string the translated message.
+     */
+    public static function t($message, $params = [], $language = null)
+    {
+        return Craft::t('salesforce', $message, $params, $language);
+    }
+
 
     /*******************************************
      * EVENTS

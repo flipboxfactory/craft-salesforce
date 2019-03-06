@@ -35,10 +35,10 @@ class AssociateObject extends AssociateIntegration
 
         /** @var ResponseInterface $response */
         $response = SObject::read(
-            $field->getConnection(),
-            $field->getCache(),
             $field->object,
-            $record->objectId
+            $record->objectId,
+            $field->getConnection(),
+            $field->getCache()
         );
 
         return $response->getStatusCode() >= 200 && $response->getStatusCode() <= 299;

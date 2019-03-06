@@ -10,14 +10,13 @@ namespace flipbox\craft\salesforce\web\twig\variables;
 
 use flipbox\craft\ember\helpers\QueryHelper;
 use flipbox\craft\integration\queries\IntegrationConnectionQuery;
+use flipbox\craft\salesforce\criteria\ObjectCriteria;
 use flipbox\craft\salesforce\Force as ForcePlugin;
 use flipbox\craft\salesforce\models\Settings;
 use flipbox\craft\salesforce\queries\SOQLQuery;
 use flipbox\craft\salesforce\records\Connection;
 use flipbox\craft\salesforce\records\SOQL;
 use flipbox\craft\salesforce\services\Cache;
-use flipbox\craft\salesforce\criteria\ObjectAccessorCriteria;
-use flipbox\craft\salesforce\criteria\ObjectAccessorCriteriaInterface;
 use yii\di\ServiceLocator;
 
 /**
@@ -61,11 +60,11 @@ class Force extends ServiceLocator
 
     /**
      * @param array $criteria
-     * @return ObjectAccessorCriteriaInterface
+     * @return ObjectCriteria
      */
-    public function getObject(array $criteria = []): ObjectAccessorCriteriaInterface
+    public function getObject(array $criteria = []): ObjectCriteria
     {
-        return new ObjectAccessorCriteria($criteria);
+        return new ObjectCriteria($criteria);
     }
 
     /**

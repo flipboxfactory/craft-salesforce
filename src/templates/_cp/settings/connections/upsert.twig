@@ -83,13 +83,46 @@
 
             <div{% if not isCurrent and types|length > 1 %} class="hidden"{% endif %}>
                 {% namespace 'settings['~class~']' %}
+
                     {% if isCurrent %}
-                        {{ connection.getSettingsHtml()|raw }}
-                    {% else %}
+                        {% set type = connection.connection %}
+                    {% endif %}
+
+                    {% if type is instance of("flipbox\\craft\\salesforce\\connections\\SavableConnectionInterface") %}
                         {{ type.getSettingsHtml()|raw }}
                     {% endif %}
                 {% endnamespace %}
             </div>
         {% endfor %}
     </div>
+{% endblock %}
+
+
+{% block details %}
+    <div id="settings" class="meta">
+        {{ forms.lightswitchField({
+            label: "Enabled"|t('app'),
+            id: 'enabled',
+            name: 'enabled',
+            on: connection.id ? connection.enabled : true,
+            errors: connection.getErrors('enabled')
+        }) }}
+    </div>
+
+    {% if connection.id %}
+        <hr>
+        <div class="meta read-only">
+            <div class="data">
+                <h5 class="heading">{{ "Created at"|t('app') }}</h5>
+                <div class="value">{{ connection.dateCreated|datetime('short') }}</div>
+            </div>
+            <div class="data">
+                <h5 class="heading">{{ "Updated at"|t('app') }}</h5>
+                <div class="value">{{ connection.dateUpdated|datetime('short') }}</div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% hook 'salesforce.connection.edit.sidebar' %}
+
 {% endblock %}

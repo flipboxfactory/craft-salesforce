@@ -10,7 +10,10 @@ namespace flipbox\craft\salesforce\models;
 
 use craft\base\Model;
 use flipbox\craft\ember\helpers\ModelHelper;
+use flipbox\craft\salesforce\helpers\TransformerHelper;
 use flipbox\craft\salesforce\services\Cache;
+use flipbox\craft\salesforce\transformers\CreateUpsertPayloadFromElement;
+use flipbox\craft\salesforce\transformers\PopulateElementFromResponse;
 
 /**
  * @author Flipbox Factory <hello@flipboxfactory.com>
@@ -69,6 +72,28 @@ class Settings extends Model
     public function getDefaultCache(): string
     {
         return $this->defaultCache;
+    }
+
+    /**
+     * @return callable
+     */
+    public function getSyncUpsertPayloadTransformer(): callable
+    {
+        return TransformerHelper::resolveTransformer([
+            'class' => CreateUpsertPayloadFromElement::class,
+            'action' => 'sync'
+        ]);
+    }
+
+    /**
+     * @return callable
+     */
+    public function getSyncPopulateElementTransformer(): callable
+    {
+        return TransformerHelper::resolveTransformer([
+            'class' => PopulateElementFromResponse::class,
+            'action' => 'sync'
+        ]);
     }
 
     /**

@@ -8,8 +8,6 @@
 
 namespace flipbox\craft\salesforce\actions\connections;
 
-use Craft;
-use craft\helpers\ArrayHelper;
 use flipbox\craft\integration\actions\connections\CreateConnection as CreateIntegrationConnection;
 use flipbox\craft\salesforce\records\Connection;
 use yii\db\ActiveRecord;
@@ -27,10 +25,7 @@ class CreateConnection extends CreateIntegrationConnection
      */
     protected function newRecord(array $config = []): ActiveRecord
     {
-        $class = ArrayHelper::remove($config, 'class', Craft::$app->getRequest()->getBodyParam('class'));
-
-        /** @var Connection $record */
-        $record = new $class;
+        $record = new Connection();
         $record->setAttributes($config);
         return $record;
     }

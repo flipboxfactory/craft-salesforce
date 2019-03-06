@@ -66,7 +66,7 @@ class PopulateElementFromResponse
         ]);
 
         $name = $event::eventName(
-            $field->object,
+            $field->handle,
             $this->action
         );
 

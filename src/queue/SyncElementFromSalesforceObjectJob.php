@@ -9,23 +9,18 @@
 namespace flipbox\craft\salesforce\queue;
 
 use Craft;
-use craft\base\Element;
-use craft\base\ElementInterface;
-use craft\helpers\ArrayHelper;
-use flipbox\craft\ember\helpers\SiteHelper;
-use flipbox\craft\integration\queries\IntegrationAssociationQuery;
-use flipbox\craft\integration\records\IntegrationAssociation;
+use craft\queue\BaseJob;
+use flipbox\craft\ember\objects\ElementAttributeTrait;
+use flipbox\craft\ember\objects\FieldAttributeTrait;
 use flipbox\craft\salesforce\fields\Objects;
-use flipbox\craft\salesforce\transformers\PopulateElementErrorsFromResponse;
-use flipbox\craft\salesforce\transformers\PopulateElementFromResponse;
-use Flipbox\Salesforce\Resources\SObject;
 
 /**
  * Sync a Salesforce Object to a Craft Element
  */
-class SyncElementFromSalesforceObjectJob extends AbstractSyncElementJob
+class SyncElementFromSalesforceObjectJob extends BaseJob implements \Serializable
 {
-    use ResolveObjectIdFromElementTrait;
+    use FieldAttributeTrait,
+        ElementAttributeTrait;
 
     /**
      * @var string|null
@@ -33,129 +28,52 @@ class SyncElementFromSalesforceObjectJob extends AbstractSyncElementJob
     public $objectId;
 
     /**
-     * @var string
+     * @var callable
      */
-    public $transformer = [
-        'class' => PopulateElementFromResponse::class,
-        'action' => 'sync'
-    ];
+    public $transformer;
 
     /**
-     * @param \craft\queue\QueueInterface|\yii\queue\Queue $queue
+     * @noinspection PhpDocMissingThrowsInspection
+     * @inheritdoc
      * @return bool
-     * @throws \Throwable
-     * @throws \craft\errors\ElementNotFoundException
-     * @throws \flipbox\craft\ember\exceptions\RecordNotFoundException
-     * @throws \yii\base\Exception
-     * @throws \yii\base\InvalidConfigException
      */
     public function execute($queue)
     {
-        return $this->syncDown(
+        $field = $this->getField();
+
+        if (!$field instanceof Objects) {
+            return false;
+        }
+
+        /** @noinspection PhpUnhandledExceptionInspection */
+        return $field->syncFromSalesforce(
             $this->getElement(),
-            $this->getField(),
-            $this->objectId
+            $this->objectId,
+            $this->transformer
         );
     }
 
     /**
-     * @param ElementInterface $element
-     * @param Objects $field
-     * @param string $objectId
-     * @return bool
-     * @throws \Throwable
-     * @throws \craft\errors\ElementNotFoundException
-     * @throws \flipbox\craft\ember\exceptions\RecordNotFoundException
-     * @throws \yii\base\Exception
-     * @throws \yii\base\InvalidConfigException
+     * @inheritdoc
      */
-    public function syncDown(
-        ElementInterface $element,
-        Objects $field,
-        string $objectId = null
-    ): bool {
-
-        $id = $objectId ?: $this->resolveObjectIdFromElement($element, $field);
-        if (null === $id) {
-            return false;
-        }
-
-        $response = SObject::read(
-            $field->getConnection(),
-            $field->getCache(),
-            $field->object,
-            $id
-        );
-
-        if (($response->getStatusCode() < 200 || $response->getStatusCode() > 300)) {
-            call_user_func_array(
-                new PopulateElementErrorsFromResponse(),
-                [
-                    $response,
-                    $element,
-                    $field,
-                    $id
-                ]
-            );
-            return false;
-        }
-
-        if (null !== ($transformer = $this->resolveTransformer($this->transformer))) {
-            call_user_func_array(
-                $transformer,
-                [
-                    $response,
-                    $element,
-                    $field,
-                    $id
-                ]
-            );
-        }
-
-        if ($objectId !== null) {
-            $this->addAssociation(
-                $element,
-                $field,
-                $id
-            );
-        }
-
-        return Craft::$app->getElements()->saveElement($element);
+    public function serialize()
+    {
+        return serialize([
+            'fieldId' => $this->getFieldId(),
+            'elementId' => $this->getElementId(),
+            'objectId' => $this->objectId,
+            'transformer' => $this->transformer
+        ]);
     }
 
     /**
-     * @param ElementInterface|Element $element
-     * @param Objects $field
-     * @param string $id
+     * @inheritdoc
      */
-    protected function addAssociation(
-        ElementInterface $element,
-        Objects $field,
-        string $id
-    ) {
-        /** @var IntegrationAssociation $recordClass */
-        $recordClass = $field::recordClass();
-
-        /** @var IntegrationAssociationQuery $associations */
-        $associationQuery = $element->getFieldValue($field->handle);
-        $associations = ArrayHelper::index($associationQuery->all(), 'objectId');
-
-        if (!array_key_exists($id, $associations)) {
-            $association = new $recordClass([
-                'element' => $element,
-                'field' => $field,
-                'siteId' => SiteHelper::ensureSiteId($element->siteId),
-                'objectId' => $id
-            ]);
-
-            $associations = array_merge(
-                $associationQuery->all(),
-                [
-                    $association
-                ]
-            );
-
-            $associationQuery->setCachedResult(array_values($associations));
-        }
+    public function unserialize($serialized)
+    {
+        Craft::configure(
+            $this,
+            unserialize($serialized)
+        );
     }
 }

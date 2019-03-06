@@ -10,9 +10,9 @@ namespace flipbox\craft\salesforce\cp\controllers\settings\view;
 
 use Craft;
 use flipbox\craft\ember\helpers\ArrayHelper;
-use flipbox\craft\salesforce\transformers\DynamicModelResponse;
 use flipbox\craft\salesforce\criteria\InstanceCriteria;
-use flipbox\craft\salesforce\criteria\ObjectAccessorCriteria;
+use flipbox\craft\salesforce\criteria\ObjectCriteria;
+use flipbox\craft\salesforce\transformers\DynamicModelResponse;
 use yii\base\DynamicModel;
 use yii\web\Response;
 
@@ -42,18 +42,21 @@ class ObjectsController extends AbstractController
         $variables = [];
         $this->baseVariables($variables);
 
-        $object = Craft::$app->getRequest()->getParam('object');
+        $variables['describedObject'] = null;
 
-        $criteria = new ObjectAccessorCriteria([
-            'object' => $object
-        ]);
+        if ($object = Craft::$app->getRequest()->getParam('object')) {
+            $criteria = new ObjectCriteria([
+                'object' => $object
+            ]);
 
-        $variables['describedObject'] = call_user_func_array(
-            new DynamicModelResponse(),
-            [
-                $criteria->describe()
-            ]
-        );
+            $variables['describedObject'] = call_user_func_array(
+                new DynamicModelResponse(),
+                [
+                    $criteria->describe()
+                ]
+            );
+        }
+
         $variables['objectOptions'] = $this->getObjectOptions();
         $variables['tabs'] = $this->getTabs();
 

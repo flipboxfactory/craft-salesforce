@@ -9,7 +9,6 @@
 namespace flipbox\craft\salesforce\criteria;
 
 use flipbox\craft\salesforce\Force;
-use flipbox\craft\salesforce\records\Connection;
 use Flipbox\Salesforce\Connections\ConnectionInterface;
 
 /**
@@ -19,44 +18,11 @@ use Flipbox\Salesforce\Connections\ConnectionInterface;
 trait ConnectionTrait
 {
     /**
-     * @var ConnectionInterface|string
-     */
-    protected $connection;
-
-    /**
-     * @param $value
-     * @return $this
-     */
-    public function connection($value)
-    {
-        return $this->setConnection($value);
-    }
-
-    /**
-     * @param $value
-     * @return $this
-     */
-    public function setConnection($value)
-    {
-        $this->connection = $value;
-        return $this;
-    }
-
-    /**
-     * @return ConnectionInterface
-     * @throws \flipbox\craft\ember\exceptions\RecordNotFoundException
-     */
-    public function getConnection(): ConnectionInterface
-    {
-        return $this->connection = $this->resolveConnection($this->connection);
-    }
-
-    /**
      * @param $connection
      * @return ConnectionInterface
-     * @throws \flipbox\craft\ember\exceptions\RecordNotFoundException
+     * @throws \flipbox\craft\integration\exceptions\ConnectionNotFound
      */
-    protected static function resolveConnection($connection): ConnectionInterface
+    protected function resolveConnection($connection): ConnectionInterface
     {
         if ($connection instanceof ConnectionInterface) {
             return $connection;
@@ -66,6 +32,6 @@ trait ConnectionTrait
             $connection = Force::getInstance()->getSettings()->getDefaultConnection();
         }
 
-        return Connection::getOne($connection);
+        return Force::getInstance()->getConnections()->get($connection);
     }
 }

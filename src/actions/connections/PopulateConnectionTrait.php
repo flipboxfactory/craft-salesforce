@@ -29,7 +29,7 @@ trait PopulateConnectionTrait
             $allSettings = [$allSettings];
         }
 
-        $settings = $allSettings[get_class($record)] ?? null;
+        $settings = $allSettings[$record->class] ?? null;
         $record->settings = $settings;
 
         return $record;

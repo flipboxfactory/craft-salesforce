@@ -10,6 +10,7 @@ namespace flipbox\craft\salesforce\cp\controllers\settings\view;
 
 use Craft;
 use craft\helpers\UrlHelper;
+use flipbox\craft\salesforce\connections\SavableConnectionInterface;
 use flipbox\craft\salesforce\Force;
 use flipbox\craft\salesforce\records\Connection;
 use yii\di\Instance;
@@ -94,8 +95,8 @@ class ConnectionsController extends AbstractController
 
         $connections = [];
         foreach ($classes as $connection) {
-            if (!$connection instanceof Connection) {
-                $connection = Instance::ensure($connection, Connection::class);
+            if (!$connection instanceof SavableConnectionInterface) {
+                $connection = Instance::ensure($connection, SavableConnectionInterface::class);
             }
 
             $connections[get_class($connection)] = $connection;

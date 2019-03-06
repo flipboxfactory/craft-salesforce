@@ -8,7 +8,7 @@
 
 namespace flipbox\craft\salesforce\web\twig\variables;
 
-use flipbox\craft\salesforce\criteria\ObjectAccessorCriteria;
+use flipbox\craft\salesforce\criteria\ObjectCriteria;
 use flipbox\craft\salesforce\criteria\QueryCriteria;
 use flipbox\craft\salesforce\criteria\SearchCriteria;
 use yii\base\Component;
@@ -45,11 +45,11 @@ class Criteria extends Component
 
     /**
      * @param array $properties
-     * @return ObjectAccessorCriteria
+     * @return ObjectCriteria
      */
-    public function getObject(array $properties = []): ObjectAccessorCriteria
+    public function getObject(array $properties = []): ObjectCriteria
     {
-        $criteria = (new ObjectAccessorCriteria())
+        $criteria = (new ObjectCriteria())
             ->populate($properties);
 
         return $criteria;
