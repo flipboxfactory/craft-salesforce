@@ -80,5 +80,4 @@ class ConnectionValidator extends Validator
             $this->addError($model, $attribute, $message);
         }
     }
-
 }
