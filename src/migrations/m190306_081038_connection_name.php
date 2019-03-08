@@ -8,8 +8,8 @@
 
 namespace flipbox\craft\salesforce\migrations;
 
-use flipbox\craft\salesforce\records\Connection as ConnectionRecord;
 use flipbox\craft\integration\migrations\IntegrationConnectionNameColumn;
+use flipbox\craft\salesforce\records\Connection as ConnectionRecord;
 
 class m190306_081038_connection_name extends IntegrationConnectionNameColumn
 {

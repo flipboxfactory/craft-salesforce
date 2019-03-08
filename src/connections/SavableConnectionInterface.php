@@ -8,8 +8,8 @@
 
 namespace flipbox\craft\salesforce\connections;
 
-use Flipbox\Salesforce\Connections\ConnectionInterface;
 use flipbox\craft\integration\connections\SavableConnectionInterface as BaseSavableConnectionInterface;
+use Flipbox\Salesforce\Connections\ConnectionInterface;
 
 interface SavableConnectionInterface extends ConnectionInterface, BaseSavableConnectionInterface
 {

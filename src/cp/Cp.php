@@ -9,6 +9,7 @@
 namespace flipbox\craft\salesforce\cp;
 
 use Craft;
+use flipbox\craft\salesforce\connections\SavableConnectionInterface;
 use flipbox\craft\salesforce\events\RegisterConnectionsEvent;
 use flipbox\craft\salesforce\Force;
 use yii\base\Module as BaseModule;
@@ -22,8 +23,10 @@ use yii\web\NotFoundHttpException;
  */
 class Cp extends BaseModule
 {
+    /**
+     * @var SavableConnectionInterface[]
+     */
     private $registeredConnections;
-
 
     /**
      * @inheritdoc
@@ -38,12 +41,13 @@ class Cp extends BaseModule
         return parent::beforeAction($action);
     }
 
+
     /*******************************************
-     * PROVIDERS
+     * CONNECTIONS
      *******************************************/
 
     /**
-     * @return array
+     * @return SavableConnectionInterface[]
      */
     public function getAvailableConnections(): array
     {
