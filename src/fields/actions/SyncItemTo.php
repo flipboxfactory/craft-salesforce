@@ -38,9 +38,6 @@ class SyncItemTo extends AbstractIntegrationItemAction
     /**
      * @inheritdoc
      * @throws \Throwable
-     * @throws \flipbox\craft\ember\exceptions\RecordNotFoundException
-     * @throws \yii\base\Exception
-     * @throws \yii\base\InvalidConfigException
      */
     public function performAction(Integrations $field, ElementInterface $element, IntegrationAssociation $record): bool
     {
