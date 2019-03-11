@@ -10,7 +10,7 @@ namespace flipbox\craft\salesforce\criteria;
 
 use flipbox\craft\ember\helpers\SiteHelper;
 use flipbox\craft\salesforce\records\ObjectAssociation;
-use Flipbox\HubSpot\Criteria\IdAttributeTrait;
+use Flipbox\Salesforce\Criteria\IdAttributeTrait;
 
 /**
  * @author Flipbox Factory <hello@flipboxfactory.com>

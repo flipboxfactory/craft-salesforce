@@ -15,7 +15,7 @@ use craft\base\FieldInterface;
 use flipbox\craft\salesforce\fields\Objects;
 use flipbox\craft\salesforce\helpers\TransformerHelper;
 use flipbox\craft\salesforce\transformers\CreateUpsertPayloadFromElement;
-use Flipbox\HubSpot\Criteria\PayloadAttributeTrait;
+use Flipbox\Salesforce\Criteria\PayloadAttributeTrait;
 
 /**
  * @author Flipbox Factory <hello@flipboxfactory.com>

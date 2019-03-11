@@ -211,6 +211,7 @@ class Objects extends Integrations
         return (new ObjectCriteria([
             'connection' => $this->getConnection(),
             'cache' => $this->getCache(),
+            'object' => $this->object,
             'id' => $id
         ]))->read();
     }
@@ -278,6 +279,7 @@ class Objects extends Integrations
         $response = (new ObjectCriteria([
             'connection' => $this->getConnection(),
             'cache' => $this->getCache(),
+            'object' => $this->object,
             'payload' => $payload,
             'id' => $id
         ]))->upsert();

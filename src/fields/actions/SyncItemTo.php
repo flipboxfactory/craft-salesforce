@@ -13,6 +13,7 @@ use craft\base\ElementInterface;
 use flipbox\craft\integration\fields\actions\AbstractIntegrationItemAction;
 use flipbox\craft\integration\fields\Integrations;
 use flipbox\craft\integration\records\IntegrationAssociation;
+use flipbox\craft\salesforce\fields\Objects;
 use flipbox\craft\salesforce\Force;
 use flipbox\craft\salesforce\queue\SyncElementToSalesforceObjectJob;
 
@@ -43,14 +44,13 @@ class SyncItemTo extends AbstractIntegrationItemAction
      */
     public function performAction(Integrations $field, ElementInterface $element, IntegrationAssociation $record): bool
     {
-        $job = new SyncElementToSalesforceObjectJob([
-            'element' => $element,
-            'field' => $field
-        ]);
+        if (!$field instanceof Objects) {
+            $this->setMessage("Invalid field type.");
+            return false;
+        }
 
-
-        if (!$job->execute(Craft::$app->getQueue())) {
-            $this->setMessage("Failed to sync to Salesforce Object");
+        if (!$field->syncToSalesforce($element)) {
+            $this->setMessage("Failed to sync to Salesforce " . $field->getObjectLabel());
             return false;
         }
 

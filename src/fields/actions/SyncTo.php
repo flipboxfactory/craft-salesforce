@@ -13,6 +13,7 @@ use craft\base\ElementInterface;
 use flipbox\craft\integration\fields\actions\AbstractIntegrationAction;
 use flipbox\craft\integration\fields\Integrations;
 use flipbox\craft\integration\queries\IntegrationAssociationQuery;
+use flipbox\craft\salesforce\fields\Objects;
 use flipbox\craft\salesforce\Force;
 use flipbox\craft\salesforce\queue\SyncElementToSalesforceObjectJob;
 use yii\web\HttpException;
@@ -45,19 +46,18 @@ class SyncTo extends AbstractIntegrationAction
      */
     public function performAction(Integrations $field, ElementInterface $element): bool
     {
+        if (!$field instanceof Objects) {
+            $this->setMessage("Invalid field type.");
+            return false;
+        }
+
         /** @var IntegrationAssociationQuery $query */
         if (null === ($query = $element->getFieldValue($field->handle))) {
             throw new HttpException(400, 'Field is not associated to element');
         }
 
-        $job = new SyncElementToSalesforceObjectJob([
-            'element' => $element,
-            'field' => $field
-        ]);
-
-
-        if (!$job->execute(Craft::$app->getQueue())) {
-            $this->setMessage("Failed to create Salesforce Object");
+        if (!$field->syncToSalesforce($element)) {
+            $this->setMessage("Failed to create Salesforce " . $field->getObjectLabel());
             return false;
         }
 
