@@ -9,6 +9,7 @@
 namespace flipbox\craft\salesforce\queue;
 
 use Craft;
+use craft\base\ElementInterface;
 use craft\queue\BaseJob;
 use flipbox\craft\ember\objects\ElementAttributeTrait;
 use flipbox\craft\ember\objects\FieldAttributeTrait;
@@ -40,14 +41,15 @@ class SyncElementToSalesforceObjectJob extends BaseJob implements \Serializable
     public function execute($queue)
     {
         $field = $this->getField();
+        $element = $this->getElement();
 
-        if (!$field instanceof Objects) {
+        if (!$field instanceof Objects || !$element instanceof ElementInterface) {
             return false;
         }
 
         /** @noinspection PhpUnhandledExceptionInspection */
         return $field->syncToSalesforce(
-            $this->getElement(),
+            $element,
             $this->objectId,
             $this->transformer
         );
