@@ -13,6 +13,7 @@ use craft\base\ElementInterface;
 use flipbox\craft\integration\fields\actions\AbstractIntegrationItemAction;
 use flipbox\craft\integration\fields\Integrations;
 use flipbox\craft\integration\records\IntegrationAssociation;
+use flipbox\craft\salesforce\Force;
 use flipbox\craft\salesforce\queue\SyncElementToSalesforceObjectJob;
 
 class SyncItemTo extends AbstractIntegrationItemAction
@@ -22,7 +23,7 @@ class SyncItemTo extends AbstractIntegrationItemAction
      */
     public function getTriggerLabel(): string
     {
-        return Craft::t('salesforce', 'Sync To Salesforce');
+        return Force::t('Sync To Salesforce');
     }
 
     /**
@@ -30,7 +31,7 @@ class SyncItemTo extends AbstractIntegrationItemAction
      */
     public function getConfirmationMessage()
     {
-        return Craft::t('salesforce', "Performing a sync will transmit any unsaved data.  Please confirm to continue.");
+        return Force::t("Performing a sync will transmit any unsaved data.  Please confirm to continue.");
     }
 
     /**

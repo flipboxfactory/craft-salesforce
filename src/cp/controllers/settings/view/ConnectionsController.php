@@ -8,7 +8,6 @@
 
 namespace flipbox\craft\salesforce\cp\controllers\settings\view;
 
-use Craft;
 use craft\helpers\UrlHelper;
 use flipbox\craft\salesforce\connections\SavableConnectionInterface;
 use flipbox\craft\salesforce\Force;
@@ -136,7 +135,7 @@ class ConnectionsController extends AbstractController
     protected function updateVariables(array &$variables, Connection $connection)
     {
         $this->baseVariables($variables);
-        $variables['title'] .= ' - ' . Craft::t('salesforce', 'Edit') . ' ' . $connection->handle;
+        $variables['title'] .= ' - ' . Force::t('Edit') . ' ' . $connection->handle;
         $variables['continueEditingUrl'] = $this->getBaseContinueEditingUrl('/' . $connection->getId());
         $variables['crumbs'][] = [
             'label' => $connection->handle,

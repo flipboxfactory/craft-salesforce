@@ -8,7 +8,6 @@
 
 namespace flipbox\craft\salesforce\cp\controllers\settings\view;
 
-use Craft;
 use flipbox\craft\ember\helpers\UrlHelper;
 use flipbox\craft\salesforce\cp\Cp as CpModule;
 use flipbox\craft\salesforce\Force;
@@ -66,7 +65,7 @@ abstract class AbstractController extends \flipbox\craft\salesforce\cp\controlle
     {
         parent::baseVariables($variables);
 
-        $title = Craft::t('salesforce', "Settings");
+        $title = Force::t("Settings");
         $variables['title'] .= ': ' . $title;
 
         // Breadcrumbs
@@ -87,6 +86,6 @@ abstract class AbstractController extends \flipbox\craft\salesforce\cp\controlle
     {
         $this->baseVariables($variables);
         $variables['continueEditingUrl'] = $this->getBaseContinueEditingUrl('/{id}');
-        $variables['title'] .= ' - ' . Craft::t('salesforce', 'New');
+        $variables['title'] .= ' - ' . Force::t('New');
     }
 }

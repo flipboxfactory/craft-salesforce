@@ -13,6 +13,7 @@ use craft\helpers\ArrayHelper;
 use flipbox\craft\integration\actions\fields\CreateFieldItem;
 use flipbox\craft\integration\actions\fields\PerformFieldAction;
 use flipbox\craft\integration\actions\fields\PerformFieldItemAction;
+use flipbox\craft\salesforce\Force;
 use yii\web\BadRequestHttpException;
 
 /**
@@ -41,8 +42,8 @@ class FieldsController extends AbstractController
                 'flash' => [
                     'actions' => [
                         'perform-action' => [
-                            200 => Craft::t('salesforce', "Action executed successfully."),
-                            400 => Craft::t('salesforce', "Failed to execute action.")
+                            200 => Force::t("Action executed successfully."),
+                            400 => Force::t("Failed to execute action.")
                         ]
                     ]
                 ]

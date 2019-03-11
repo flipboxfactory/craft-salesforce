@@ -12,6 +12,7 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\helpers\ArrayHelper;
 use flipbox\craft\salesforce\actions\widgets\SyncFrom;
+use flipbox\craft\salesforce\Force;
 use yii\web\HttpException;
 
 /**
@@ -40,8 +41,8 @@ class WidgetsController extends AbstractController
                 'flash' => [
                     'actions' => [
                         'sync-from' => [
-                            200 => Craft::t('salesforce', "Salesforce Object synced successfully"),
-                            400 => Craft::t('salesforce', "Failed to sync Salesforce Object")
+                            200 => Force::t("Salesforce Object synced successfully"),
+                            400 => Force::t("Failed to sync Salesforce Object")
                         ]
                     ]
                 ]

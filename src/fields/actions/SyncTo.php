@@ -13,6 +13,7 @@ use craft\base\ElementInterface;
 use flipbox\craft\integration\fields\actions\AbstractIntegrationAction;
 use flipbox\craft\integration\fields\Integrations;
 use flipbox\craft\integration\queries\IntegrationAssociationQuery;
+use flipbox\craft\salesforce\Force;
 use flipbox\craft\salesforce\queue\SyncElementToSalesforceObjectJob;
 use yii\web\HttpException;
 
@@ -23,7 +24,7 @@ class SyncTo extends AbstractIntegrationAction
      */
     public function getTriggerLabel(): string
     {
-        return Craft::t('salesforce', 'Create Salesforce Object from Element');
+        return Force::t('Create Salesforce Object from Element');
     }
 
     /**
@@ -31,8 +32,7 @@ class SyncTo extends AbstractIntegrationAction
      */
     public function getConfirmationMessage()
     {
-        return Craft::t(
-            'salesforce',
+        return Force::t(
             "This element will be used to create a new Salesforce Object.  Please confirm to continue."
         );
     }
@@ -41,9 +41,7 @@ class SyncTo extends AbstractIntegrationAction
      * @inheritdoc
      * @throws HttpException
      * @throws \Throwable
-     * @throws \flipbox\craft\ember\exceptions\RecordNotFoundException
      * @throws \yii\base\Exception
-     * @throws \yii\base\InvalidConfigException
      */
     public function performAction(Integrations $field, ElementInterface $element): bool
     {

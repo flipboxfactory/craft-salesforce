@@ -8,8 +8,8 @@
 
 namespace flipbox\craft\salesforce\validators;
 
-use Craft;
 use flipbox\craft\salesforce\connections\SavableConnectionInterface;
+use flipbox\craft\salesforce\Force;
 use flipbox\craft\salesforce\records\Connection;
 use Flipbox\Salesforce\Connections\ConnectionInterface;
 use yii\base\Model;
@@ -31,8 +31,7 @@ class ConnectionValidator extends Validator
         // Handles are always required, so if it's blank, the required validator will catch this.
         if ($class) {
             if (!$this->isValid($class)) {
-                $message = Craft::t(
-                    'hubspot',
+                $message = Force::t(
                     '“{class}” is a not a valid connection.',
                     ['class' => $class]
                 );
@@ -72,8 +71,7 @@ class ConnectionValidator extends Validator
         }
 
         if (!$connection->validate()) {
-            $message = Craft::t(
-                'hubspot',
+            $message = Force::t(
                 'Invalid settings.',
                 ['class' => $class]
             );

@@ -14,6 +14,7 @@ use flipbox\craft\salesforce\actions\query\CreateQuery;
 use flipbox\craft\salesforce\actions\query\DeleteQuery;
 use flipbox\craft\salesforce\actions\query\PreviewQuery;
 use flipbox\craft\salesforce\actions\query\UpdateQuery;
+use flipbox\craft\salesforce\Force;
 
 /**
  * @author Flipbox Factory <hello@flipboxfactory.com>
@@ -43,16 +44,16 @@ class QueriesController extends AbstractController
                 'flash' => [
                     'actions' => [
                         'create' => [
-                            201 => Craft::t('salesforce', "Query successfully created."),
-                            400 => Craft::t('salesforce', "Failed to create query.")
+                            201 => Force::t("Query successfully created."),
+                            400 => Force::t("Failed to create query.")
                         ],
                         'update' => [
-                            200 => Craft::t('salesforce', "Query successfully updated."),
-                            400 => Craft::t('salesforce', "Failed to update query.")
+                            200 => Force::t("Query successfully updated."),
+                            400 => Force::t("Failed to update query.")
                         ],
                         'delete' => [
-                            204 => Craft::t('salesforce', "Query successfully deleted."),
-                            400 => Craft::t('salesforce', "Failed to delete query.")
+                            204 => Force::t("Query successfully deleted."),
+                            400 => Force::t("Failed to delete query.")
                         ]
                     ]
                 ]

@@ -137,11 +137,11 @@ class Force extends Plugin
             [
                 'subnav' => [
                     'salesforce.queries' => [
-                        'label' => Craft::t('salesforce', 'Queries'),
+                        'label' => static::t('Queries'),
                         'url' => 'salesforce/queries'
                     ],
                     'salesforce.settings' => [
-                        'label' => Craft::t('salesforce', 'Settings'),
+                        'label' => static::t('Settings'),
                         'url' => 'salesforce/settings',
                     ]
                 ]

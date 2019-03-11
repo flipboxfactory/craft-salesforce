@@ -13,6 +13,7 @@ use craft\base\ElementInterface;
 use craft\base\Widget;
 use craft\db\Query;
 use flipbox\craft\salesforce\fields\Objects;
+use flipbox\craft\salesforce\Force;
 use flipbox\craft\salesforce\web\assets\widgets\SyncWidget;
 
 class ObjectWidget extends Widget
@@ -37,7 +38,7 @@ class ObjectWidget extends Widget
      */
     public static function displayName(): string
     {
-        return Craft::t('salesforce', 'Sync Salesforce Object');
+        return Force::t('Sync Salesforce Object');
     }
 
     /**

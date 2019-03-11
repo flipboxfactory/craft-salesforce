@@ -12,6 +12,7 @@ use Craft;
 use flipbox\craft\ember\helpers\ArrayHelper;
 use flipbox\craft\salesforce\criteria\InstanceCriteria;
 use flipbox\craft\salesforce\criteria\ObjectCriteria;
+use flipbox\craft\salesforce\Force;
 use flipbox\craft\salesforce\transformers\DynamicModelResponse;
 use yii\base\DynamicModel;
 use yii\web\Response;
@@ -105,11 +106,11 @@ class ObjectsController extends AbstractController
     {
         return [
             'fields' => [
-                'label' => Craft::t('salesforce', 'Fields'),
+                'label' => Force::t('Fields'),
                 'url' => '#fields'
             ],
             'relations' => [
-                'label' => Craft::t('salesforce', 'Relationships'),
+                'label' => Force::t('Relationships'),
                 'url' => '#relations'
             ]
         ];

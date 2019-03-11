@@ -138,7 +138,7 @@ class Objects extends Integrations
                 [
                     'object',
                     'required',
-                    'message' => Craft::t(static::TRANSLATION_CATEGORY, 'Object cannot be empty.')
+                    'message' => Force::t('Object cannot be empty.')
                 ],
                 [
                     [
@@ -184,7 +184,7 @@ class Objects extends Integrations
      */
     public static function displayName(): string
     {
-        return Craft::t('salesforce', 'Salesforce Objects');
+        return Force::t('Salesforce Objects');
     }
 
     /**
@@ -192,7 +192,7 @@ class Objects extends Integrations
      */
     public static function defaultSelectionLabel(): string
     {
-        return Craft::t('salesforce', 'Add a Salesforce Object');
+        return Force::t('Add a Salesforce Object');
     }
 
 

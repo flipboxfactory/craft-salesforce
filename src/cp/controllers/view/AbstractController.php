@@ -67,7 +67,7 @@ abstract class AbstractController extends Controller
     {
         $module = Force::getInstance();
 
-        $title = Craft::t('salesforce', "Salesforce");
+        $title = Force::t("Salesforce");
 
         // Settings
         $variables['settings'] = $module->getSettings();
@@ -111,6 +111,6 @@ abstract class AbstractController extends Controller
         $variables['continueEditingUrl'] = $this->getBaseContinueEditingUrl('/{id}');
 
         // Append title
-        $variables['title'] .= ' - ' . Craft::t('salesforce', 'New');
+        $variables['title'] .= ' - ' . Force::t('New');
     }
 }
