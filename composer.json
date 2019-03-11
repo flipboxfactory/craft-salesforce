@@ -15,9 +15,8 @@
     "craftcms/cms": "^3.0.14",
     "flipboxdigital/salesforce": "^3.3",
     "flipboxfactory/craft-ember": "^2.1",
-    "flipboxfactory/craft-integration": "^2.0",
-    "flipboxfactory/craft-psr16": "^1.0",
-    "flipboxfactory/craft-psr3": "^1.0"
+    "flipboxfactory/craft-integration": "^2.2",
+    "flipboxfactory/craft-psr3": "^1.1"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.2",
