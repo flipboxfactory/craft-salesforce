@@ -42,6 +42,11 @@ class Force extends Plugin
     use LoggerTrait;
 
     /**
+     * @var string
+     */
+    public static $category = 'salesforce';
+
+    /**
      * @inheritdocfind
      */
     public function init()
@@ -139,6 +144,14 @@ class Force extends Plugin
                     'salesforce.queries' => [
                         'label' => static::t('Queries'),
                         'url' => 'salesforce/queries'
+                    ],
+                    'salesforce.objects' => [
+                        'label' => static::t('Objects'),
+                        'url' => 'salesforce/objects'
+                    ],
+                    'salesforce.limits' => [
+                        'label' => static::t('Limits'),
+                        'url' => 'salesforce/limits'
                     ],
                     'salesforce.settings' => [
                         'label' => static::t('Settings'),
@@ -271,17 +284,20 @@ class Force extends Plugin
                 'salesforce/queries/new' => 'salesforce/cp/view/queries/upsert',
                 'salesforce/queries/<identifier:\d+>' => 'salesforce/cp/view/queries/upsert',
 
+                // LIMITS
+                'salesforce/limits' => 'salesforce/cp/view/limits/index',
+
+                // SOBJECTS
+                'salesforce/objects' => 'salesforce/cp/view/objects/index',
+                'salesforce/objects/payloads/<field:\d+>/element/<element:\d+>' => 'salesforce/cp/view/object-payloads/index',
+
                 // SETTINGS
                 'salesforce/settings' => 'salesforce/cp/settings/view/general/index',
-                'salesforce/settings/limits' => 'salesforce/cp/settings/view/limits/index',
 
                 // SETTINGS: CONNECTIONS
                 'salesforce/settings/connections' => 'salesforce/cp/settings/view/connections/index',
                 'salesforce/settings/connections/new' => 'salesforce/cp/settings/view/connections/upsert',
                 'salesforce/settings/connections/<identifier:\d+>' => 'salesforce/cp/settings/view/connections/upsert',
-
-                // SETTINGS: SOBJECTS
-                'salesforce/settings/objects' => 'salesforce/cp/settings/view/objects/index'
             ]
         );
     }

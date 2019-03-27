@@ -1,0 +1,58 @@
+{% extends "salesforce/_cp/_layout" %}
+
+{% block contextMenu %}
+    {% include "salesforce/_cp/_layout/_connectionOptions" with {
+        availableConnections: availableConnections,
+        activeConnection: activeConnection,
+        defaultConnection: defaultConnection
+    } only %}
+{% endblock %}
+
+{% set content %}
+    <table class="data fullwidth fixed-layout">
+        <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th>{{ "Remaining"|t('salesforce') }}</th>
+            <th>{{ "Max"|t('salesforce') }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if limits and not limits.hasErrors() %}
+            {% from _self import MaxRemainingLimits %}
+            {{ MaxRemainingLimits(limits.DailyApiRequests, 'Daily Api Requests') }}
+            {{ MaxRemainingLimits(limits.DailyBulkApiRequests, 'Daily Bulk Api Requests') }}
+            {{ MaxRemainingLimits(limits.DailyGenericStreamingApiEvents, 'Daily Generic Streaming Events') }}
+            {{ MaxRemainingLimits(limits.DailyStreamingApiEvents, 'Daily Streaming Events') }}
+        {% else %}
+            <tr>
+                <td colspan="3">
+                    <em>Unable to fetch results because an error occurred.</em>
+                </td>
+            </tr>
+            {% for error in limits.getFirstErrors %}
+                <tr>
+                    <td colspan="3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Reason:</strong> {{ error|raw }}</td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+{% endset %}
+
+{% macro MaxRemainingLimits(node, label) %}
+    <tr>
+        <th>{{ label }}</th>
+        <td>{{ node.Remaining }}</td>
+        <td>{{ node.Max }}</td>
+    </tr>
+    {% for siteName, subNode in node %}
+        {% if siteName not in ['Max', 'Remaining'] %}
+            <tr>
+                <th class="light">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ siteName }}</th>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ subNode.Remaining }}</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ subNode.Max }}</td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}

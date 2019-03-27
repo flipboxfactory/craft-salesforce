@@ -17,6 +17,14 @@
     }
 {% endcss %}
 
+{% block contextMenu %}
+    {% include "salesforce/_cp/_layout/_connectionOptions" with {
+        availableConnections: availableConnections,
+        activeConnection: activeConnection,
+        defaultConnection: defaultConnection
+    } only %}
+{% endblock %}
+
 {% block actionButton %}
     <div class="btngroup submit right">
         <input type="submit" class="btn submit" value="{{ 'Save'|t('app') }}">
@@ -102,15 +110,20 @@
             {{ query.settingsHtml()|raw }}
         {% endnamespace %}
 
-        <input type="submit" class="btn preview" value="{{ 'Preview Query'|t('app') }}">
-        <div class="spinner hidden"></div>
+        {% if activeConnection %}
+            <input type="submit" class="btn preview" value="{{ 'Preview Query'|t('app') }}">
+            <div class="spinner hidden"></div>
 
-        <div id="query-preview" style="display: none;">
-            <br /><br />
-            <div id="query-soql"></div>
-            <hr/>
-            <pre><code id="query-results" class="json"></code></pre>
-        </div>
+            <div id="query-preview" style="display: none;">
+                <br /><br />
+                <div id="query-soql"></div>
+                <hr/>
+                <pre><code id="query-results" class="json"></code></pre>
+            </div>
+        {% else %}
+            <a href="{{ cpUrl('salesforce/settings/connections') }}">Create a connection</a>&nbsp;{{ "to preview this query."|t('force') }}
+        {% endif %}
+
     </div>
 {% endblock %}
 {% js %}

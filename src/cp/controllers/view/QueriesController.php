@@ -24,17 +24,17 @@ class QueriesController extends AbstractController
     /**
      * The template base path
      */
-    const TEMPLATE_BASE = parent::TEMPLATE_BASE . DIRECTORY_SEPARATOR . 'queries';
+    const TEMPLATE_BASE = parent::TEMPLATE_BASE . '/queries';
 
     /**
      * The index view template path
      */
-    const TEMPLATE_INDEX = self::TEMPLATE_BASE . DIRECTORY_SEPARATOR . 'index';
+    const TEMPLATE_INDEX = self::TEMPLATE_BASE . '/index';
 
     /**
      * The index view template path
      */
-    const TEMPLATE_UPSERT = self::TEMPLATE_BASE . DIRECTORY_SEPARATOR . 'upsert';
+    const TEMPLATE_UPSERT = self::TEMPLATE_BASE . '/upsert';
 
     /**
      * Index/List

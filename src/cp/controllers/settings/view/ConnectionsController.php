@@ -67,11 +67,13 @@ class ConnectionsController extends AbstractController
         if (null === $connection) {
             if (null !== $identifier) {
                 $connection = Connection::getOne($identifier);
+            } else {
+                $connection = new Connection();
             }
         }
 
         $variables = [];
-        if ($connection === null || $connection->getIsNewRecord()) {
+        if ($connection->getIsNewRecord()) {
             $this->insertVariables($variables);
         } else {
             $this->updateVariables($variables, $connection);
