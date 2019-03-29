@@ -100,7 +100,7 @@ abstract class AbstractController extends Controller
         if ($connection === null) {
             $connections = $this->getConnections();
 
-            if(count($connections) === 1) {
+            if (count($connections) === 1) {
                 return reset($connections);
             }
         }

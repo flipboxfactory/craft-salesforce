@@ -105,7 +105,6 @@ class ObjectsController extends AbstractController
 
             // Sort them by name
             ArrayHelper::multisort($describeOptions, 'label');
-
         } catch (UnknownPropertyException $e) {
             // intentionally doing nothing
         }
