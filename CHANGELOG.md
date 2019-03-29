@@ -1,5 +1,15 @@
 Changelog
 =========
+
+## 1.1.1 - 2019-03-29
+### Added
+- Admin interactions with the Salesforce API can specific which connection to use
+
+## 1.1.0 - 2019-03-11
+
+### Added
+- Connections can be managed via the admin
+
 ## 1.0.3 - 2019-02-20
 ### Added
 - Criteria template variables to create criteria used to access date `craft.salesforce.criteria.query`, `craft.salesforce.criteria.object`, `craft.salesforce.criteria.search` 

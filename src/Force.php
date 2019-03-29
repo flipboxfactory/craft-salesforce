@@ -289,7 +289,8 @@ class Force extends Plugin
 
                 // SOBJECTS
                 'salesforce/objects' => 'salesforce/cp/view/objects/index',
-                'salesforce/objects/payloads/<field:\d+>/element/<element:\d+>' => 'salesforce/cp/view/object-payloads/index',
+                'salesforce/objects/payloads/<field:\d+>/element/<element:\d+>' =>
+                    'salesforce/cp/view/object-payloads/index',
 
                 // SETTINGS
                 'salesforce/settings' => 'salesforce/cp/settings/view/general/index',
