@@ -15,7 +15,6 @@ use flipbox\craft\integration\fields\Integrations;
 use flipbox\craft\integration\records\IntegrationAssociation;
 use flipbox\craft\salesforce\fields\Objects;
 use flipbox\craft\salesforce\Force;
-use flipbox\craft\salesforce\queue\SyncElementToSalesforceObjectJob;
 
 class SyncItemTo extends AbstractIntegrationItemAction
 {

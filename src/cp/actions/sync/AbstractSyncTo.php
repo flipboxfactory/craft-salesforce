@@ -12,7 +12,6 @@ use Craft;
 use craft\base\ElementInterface;
 use flipbox\craft\ember\actions\CheckAccessTrait;
 use flipbox\craft\salesforce\fields\Objects;
-use flipbox\craft\salesforce\queue\SyncElementToSalesforceObjectJob;
 use yii\base\Action;
 
 /**
@@ -53,19 +52,15 @@ abstract class AbstractSyncTo extends Action
      * @param ElementInterface $element
      * @param Objects $field
      * @return bool
-     * @throws \flipbox\craft\ember\exceptions\RecordNotFoundException
-     * @throws \yii\base\InvalidConfigException
+     * @throws \Throwable
      */
     protected function performAction(
         ElementInterface $element,
         Objects $field
     ) {
-        $job = new SyncElementToSalesforceObjectJob([
-            'element' => $element,
-            'field' => $field
-        ]);
-
-        return $job->execute(Craft::$app->getQueue());
+        return $field->syncToSalesforce(
+            $element
+        );
     }
 
     /**

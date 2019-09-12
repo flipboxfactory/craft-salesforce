@@ -12,11 +12,14 @@ use flipbox\craft\ember\helpers\QueryHelper;
 use flipbox\craft\integration\queries\IntegrationConnectionQuery;
 use flipbox\craft\salesforce\criteria\ObjectCriteria;
 use flipbox\craft\salesforce\Force as ForcePlugin;
+use flipbox\craft\salesforce\helpers\TransformerHelper;
 use flipbox\craft\salesforce\models\Settings;
 use flipbox\craft\salesforce\queries\SOQLQuery;
 use flipbox\craft\salesforce\records\Connection;
 use flipbox\craft\salesforce\records\SOQL;
 use flipbox\craft\salesforce\services\Cache;
+use Psr\Http\Message\ResponseInterface;
+use yii\base\DynamicModel;
 use yii\di\ServiceLocator;
 
 /**
@@ -39,10 +42,10 @@ class Force extends ServiceLocator
     }
 
     /**
-     * @param array $criteria
+     * @param array|string $criteria
      * @return SOQLQuery
      */
-    public function getQuery(array $criteria = []): SOQLQuery
+    public function getQuery($criteria = []): SOQLQuery
     {
         if (is_string($criteria)) {
             $criteria = [(is_numeric($criteria) ? 'id' : 'handle') => $criteria];
@@ -56,6 +59,15 @@ class Force extends ServiceLocator
         );
 
         return $query;
+    }
+
+    /**
+     * @param ResponseInterface $response
+     * @return DynamicModel
+     */
+    public function transform(ResponseInterface $response): DynamicModel
+    {
+        return TransformerHelper::responseToModel($response);
     }
 
     /**

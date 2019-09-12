@@ -8,7 +8,9 @@
 
 namespace flipbox\craft\salesforce\models;
 
+use Craft;
 use craft\base\Model;
+use craft\helpers\StringHelper;
 use flipbox\craft\ember\helpers\ModelHelper;
 use flipbox\craft\salesforce\helpers\TransformerHelper;
 use flipbox\craft\salesforce\services\Cache;
@@ -37,6 +39,11 @@ class Settings extends Model
      * @var string
      */
     private $defaultConnection = self::DEFAULT_CONNECTION;
+
+    /**
+     * @var string
+     */
+    private $webhookToken;
 
     /**
      * @param string $key
@@ -97,6 +104,24 @@ class Settings extends Model
     }
 
     /**
+     * @param string $token
+     * @return $this
+     */
+    public function setWebHookToken(string $token)
+    {
+        $this->webhookToken = $token;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWebHookToken(): string
+    {
+        return $this->webhookToken ?: StringHelper::randomString();
+    }
+
+    /**
      * @return array
      */
     public function attributes()
@@ -105,7 +130,8 @@ class Settings extends Model
             parent::attributes(),
             [
                 'defaultConnection',
-                'defaultCache'
+                'defaultCache',
+                'webHookToken'
             ]
         );
     }
@@ -121,7 +147,8 @@ class Settings extends Model
                 [
                     [
                         'defaultConnection',
-                        'defaultCache'
+                        'defaultCache',
+                        'webHookToken'
                     ],
                     'safe',
                     'on' => [

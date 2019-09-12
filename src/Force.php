@@ -23,6 +23,7 @@ use flipbox\craft\ember\modules\LoggerTrait;
 use flipbox\craft\psr3\Logger;
 use flipbox\craft\salesforce\fields\Objects as ObjectsField;
 use flipbox\craft\salesforce\models\Settings as SettingsModel;
+use flipbox\craft\salesforce\web\twig\Extension;
 use flipbox\craft\salesforce\web\twig\variables\Force as ForceVariable;
 use Flipbox\Salesforce\Salesforce;
 use yii\base\Event;
@@ -74,8 +75,10 @@ class Force extends Plugin
         // Modules
         $this->setModules([
             'cp' => cp\Cp::class
-
         ]);
+
+        // Add our custom twig extension
+        Craft::$app->getView()->getTwig()->addExtension(new Extension());
 
         // Fields
         Event::on(

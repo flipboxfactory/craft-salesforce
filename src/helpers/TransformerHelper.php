@@ -9,6 +9,9 @@
 namespace flipbox\craft\salesforce\helpers;
 
 use Craft;
+use flipbox\craft\salesforce\transformers\DynamicModelResponse;
+use Psr\Http\Message\ResponseInterface;
+use yii\base\DynamicModel;
 
 /**
  * @author Flipbox Factory <hello@flipboxfactory.com>
@@ -25,6 +28,20 @@ class TransformerHelper
      * The sync payload action name
      */
     const PAYLOAD_ACTION_SAVE = 'save';
+
+    /**
+     * @param ResponseInterface $response
+     * @return DynamicModel
+     */
+    public static function responseToModel(ResponseInterface $response): DynamicModel
+    {
+        return call_user_func_array(
+            new DynamicModelResponse(),
+            [
+                $response
+            ]
+        );
+    }
 
     /**
      * @param $transformer

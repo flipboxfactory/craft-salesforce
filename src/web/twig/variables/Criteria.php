@@ -11,6 +11,7 @@ namespace flipbox\craft\salesforce\web\twig\variables;
 use flipbox\craft\salesforce\criteria\ObjectCriteria;
 use flipbox\craft\salesforce\criteria\QueryCriteria;
 use flipbox\craft\salesforce\criteria\SearchCriteria;
+use flipbox\craft\salesforce\criteria\UrlCriteria;
 use yii\base\Component;
 
 /**
@@ -19,6 +20,18 @@ use yii\base\Component;
  */
 class Criteria extends Component
 {
+    /**
+     * @param array $properties
+     * @return UrlCriteria
+     */
+    public function getUrl(array $properties = []): UrlCriteria
+    {
+        $criteria = (new UrlCriteria())
+            ->populate($properties);
+
+        return $criteria;
+    }
+
     /**
      * @param array $properties
      * @return QueryCriteria

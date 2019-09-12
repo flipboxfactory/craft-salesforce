@@ -87,6 +87,17 @@ class Objects extends Integrations
     public $object;
 
     /**
+     * Indicates whether the full sync operation should be preformed if a matching HubSpot Object was found but not
+     * currently associated to the element.  For example, when attempting to Sync a Craft User to a HubSpot Contact, if
+     * the HubSpot Contact already exists; true would override data in HubSpot while false would just perform
+     * an association (note, a subsequent sync operation could be preformed)
+     * @var bool
+     *
+     * @deprecated
+     */
+    public $syncOnMatch = false;
+
+    /**
      * @inheritdoc
      */
     protected $defaultAvailableActions = [
@@ -197,27 +208,6 @@ class Objects extends Integrations
 
 
     /*******************************************
-     * SALESFORCE
-     *******************************************/
-
-    /**
-     * @param string $id
-     * @return ResponseInterface
-     */
-    public function readFromSalesforce(
-        string $id
-    ): ResponseInterface {
-
-        return (new ObjectCriteria([
-            'connection' => $this->getConnection(),
-            'cache' => $this->getCache(),
-            'object' => $this->object,
-            'id' => $id
-        ]))->read();
-    }
-
-
-    /*******************************************
      * CONNECTION
      *******************************************/
 
@@ -245,21 +235,66 @@ class Objects extends Integrations
 
 
     /*******************************************
+     * SALESFORCE
+     *******************************************/
+
+    /**
+     * @param string $id
+     * @return ResponseInterface
+     */
+    public function readFromSalesforce(
+        string $id
+    ): ResponseInterface {
+
+        return (new ObjectCriteria([
+            'connection' => $this->getConnection(),
+            'cache' => $this->getCache(),
+            'object' => $this->object,
+            'id' => $id
+        ]))->read();
+    }
+
+
+    /**
+     * @param array $payload
+     * @param string|null $id
+     * @return ResponseInterface
+     * @throws \flipbox\craft\integration\exceptions\ConnectionNotFound
+     */
+    protected function upsertToSalesforce(
+        array $payload,
+        string $id = null
+    ) {
+        return (new ObjectCriteria([
+            'connection' => $this->getConnection(),
+            'cache' => $this->getCache(),
+            'object' => $this->object,
+            'payload' => $payload,
+            'id' => $id
+        ]))->upsert();
+    }
+
+
+    /*******************************************
      * SYNC TO
      *******************************************/
 
     /**
-     * @inheritdoc
+     * @param ElementInterface $element
+     * @param string|null $objectId
+     * @param null $transformer
+     * @return ResponseInterface|null
      * @throws \Throwable
+     * @throws \flipbox\craft\integration\exceptions\ConnectionNotFound
      */
-    public function syncToSalesforce(
+    protected function pushToSalesforce(
         ElementInterface $element,
         string $objectId = null,
         $transformer = null
-    ): bool {
+    ) {
         /** @var Element $element */
 
-        $id = $objectId ?: $this->resolveObjectIdFromElement($element);
+        $id = $objectId ?: $this->findObjectIdFromElementId($element->getId());
 
         // Get callable used to create payload
         if (null === ($transformer = TransformerHelper::resolveTransformer($transformer))) {
@@ -276,19 +311,29 @@ class Objects extends Integrations
             ]
         );
 
-        $response = (new ObjectCriteria([
-            'connection' => $this->getConnection(),
-            'cache' => $this->getCache(),
-            'object' => $this->object,
-            'payload' => $payload,
-            'id' => $id
-        ]))->upsert();
+        $response = $this->upsertToSalesforce($payload, $id);
 
-        return $this->handleSyncToSalesforceResponse(
+        if (!$this->handleSyncToSalesforceResponse(
             $response,
             $element,
             $id
-        );
+        )) {
+            return null;
+        }
+
+        return $response;
+    }
+
+    /**
+     * @inheritdoc
+     * @throws \Throwable
+     */
+    public function syncToSalesforce(
+        ElementInterface $element,
+        string $objectId = null,
+        $transformer = null
+    ): bool {
+        return $this->pushToSalesforce($element, $objectId, $transformer) !== null;
     }
 
 
@@ -297,21 +342,24 @@ class Objects extends Integrations
      *******************************************/
 
     /**
-     * @@inheritdoc
+     * @param ElementInterface $element
+     * @param string|null $objectId
+     * @param null $transformer
+     * @return ResponseInterface|null
      * @throws \Throwable
      * @throws \craft\errors\ElementNotFoundException
      * @throws \yii\base\Exception
      */
-    public function syncFromSalesforce(
+    protected function pullFromSalesforce(
         ElementInterface $element,
         string $objectId = null,
         $transformer = null
-    ): bool {
+    ) {
 
-        $id = $objectId ?: $this->resolveObjectIdFromElement($element);
+        $id = $objectId ?: $this->findObjectIdFromElementId($element->getId());
 
         if (null === $id) {
-            return false;
+            return null;
         }
 
         $response = $this->readFromSalesforce($id);
@@ -326,7 +374,7 @@ class Objects extends Integrations
                     $id
                 ]
             );
-            return false;
+            return null;
         }
 
         // Get callable used to populate element
@@ -352,8 +400,30 @@ class Objects extends Integrations
             );
         }
 
-        return Craft::$app->getElements()->saveElement($element);
+        if (!Craft::$app->getElements()->saveElement($element)) {
+            return null;
+        }
+
+        return $response;
     }
+
+    /**
+     * @@inheritdoc
+     * @throws \Throwable
+     * @throws \craft\errors\ElementNotFoundException
+     * @throws \yii\base\Exception
+     */
+    public function syncFromSalesforce(
+        ElementInterface $element,
+        string $objectId = null,
+        $transformer = null
+    ): bool {
+        return $this->pullFromSalesforce($element, $objectId, $transformer) !== null;
+    }
+
+    /*******************************************
+     * ASSOCIATIONS
+     *******************************************/
 
     /**
      * @param ElementInterface|Element $element
@@ -361,7 +431,7 @@ class Objects extends Integrations
      * @return bool
      * @throws \Throwable
      */
-    protected function addAssociation(
+    public function addAssociation(
         ElementInterface $element,
         string $id
     ) {
@@ -384,6 +454,33 @@ class Objects extends Integrations
             $query->setCachedResult(array_values($associations));
 
             return $association->save();
+        }
+
+        return true;
+    }
+
+    /**
+     * @param ElementInterface|Element $element
+     * @param string $id
+     * @return bool
+     * @throws \Throwable
+     */
+    public function removeAssociation(
+        ElementInterface $element,
+        string $id
+    ) {
+        /** @var IntegrationAssociationQuery $query */
+        if (null === ($query = $element->getFieldValue($this->handle))) {
+            Force::warning("Field is not available on element.");
+            return false;
+        };
+
+        /** @var ObjectAssociation[] $association */
+        $associations = ArrayHelper::index($query->all(), 'objectId');
+
+        if ($association = ArrayHelper::remove($associations, $id)) {
+            $query->clearCachedResult();
+            return $association->delete();
         }
 
         return true;
@@ -443,23 +540,24 @@ class Objects extends Integrations
     }
 
     /**
-     * @param ElementInterface|Element $element
-     * @return null|string
+     * @param int $elementId
+     * @param int|null $siteId
+     * @return bool|false|string|null
      */
-    protected function resolveObjectIdFromElement(
-        ElementInterface $element
+    public function findObjectIdFromElementId(
+        int $elementId,
+        int $siteId = null
     ) {
-
         if (!$objectId = ObjectAssociation::find()
             ->select(['objectId'])
-            ->elementId($element->getId())
+            ->elementId($elementId)
             ->fieldId($this->id)
-            ->siteId(SiteHelper::ensureSiteId($element->siteId))
+            ->siteId(SiteHelper::ensureSiteId($siteId))
             ->scalar()
         ) {
             Force::warning(sprintf(
                 "Salesforce Object Id association was not found for element '%s'",
-                $element->getId()
+                $elementId
             ));
 
             return null;
@@ -468,9 +566,42 @@ class Objects extends Integrations
         Force::info(sprintf(
             "Salesforce Object Id '%s' was found for element '%s'",
             $objectId,
-            $element->getId()
+            $elementId
         ));
 
         return $objectId;
+    }
+
+    /**
+     * @param string $objectId
+     * @param int|null $siteId
+     * @return bool|false|string|null
+     */
+    public function findElementIdFromObjectId(
+        string $objectId,
+        int $siteId = null
+    ) {
+        if (!$elementId = ObjectAssociation::find()
+            ->select(['elementId'])
+            ->objectId($objectId)
+            ->fieldId($this->id)
+            ->siteId(SiteHelper::ensureSiteId($siteId))
+            ->scalar()
+        ) {
+            Force::warning(sprintf(
+                "Element Id association was not found for Salesforce object '%s'",
+                $objectId
+            ));
+
+            return null;
+        }
+
+        Force::info(sprintf(
+            "Element Id '%s' was found for Salesforce object '%s'",
+            $elementId,
+            $objectId
+        ));
+
+        return $elementId;
     }
 }

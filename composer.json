@@ -1,7 +1,7 @@
 {
   "name": "flipboxfactory/craft-salesforce",
   "description": "Salesforce Integration for Craft CMS",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "type": "craft-plugin",
   "license": "proprietary",
   "keywords": [
@@ -52,8 +52,8 @@
     "hasCpSettings": true,
     "schemaVersion": "1.2.0",
     "branch-alias": {
-      "dev-master": "1.0.x-dev",
-      "dev-develop": "1.1.x-dev"
+      "dev-master": "1.1.x-dev",
+      "dev-develop": "1.2.x-dev"
     }
   }
 }
