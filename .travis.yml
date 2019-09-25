@@ -13,8 +13,6 @@ services:
 
 before_install:
   - nvm install 8
-  - mysql -e 'UPDATE user SET password=PASSWORD("password") WHERE user="root";' -u root
-  - mysql -e 'FLUSH PRIVILEGES;' -u root
   - mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
 
 install:
