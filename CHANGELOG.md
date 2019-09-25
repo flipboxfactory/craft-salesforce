@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## Unreleased
+### Added
+- Attachment download capabilities
+- Webhook processing capabilities (to trigger actions from external sources).
+
 ## 1.1.1 - 2019-03-29
 ### Added
 - Admin interactions with the Salesforce API can specific which connection to use

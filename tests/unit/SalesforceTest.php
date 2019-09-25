@@ -4,120 +4,69 @@ namespace flipbox\craft\salesforce\tests;
 
 use Codeception\Test\Unit;
 use flipbox\craft\psr3\Logger;
-use flipbox\craft\salesforce\Force as SalesforcePlugin;
+use flipbox\craft\salesforce\cp\Cp;
+use flipbox\craft\salesforce\Force;
+use flipbox\craft\salesforce\services\Connections;
 use flipbox\craft\salesforce\services\Cache;
 
 class SalesforceTest extends Unit
 {
     /**
-     * @var SalesforcePlugin
-     */
-    private $module;
-
-    /**
-     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
-     * phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
-     */
-    protected function _before()
-    {
-        $this->module = new SalesforcePlugin('salesforce');
-    }
-
-    /**
-     * Test the component is set correctly
+     * Test the 'Cache' component is set correctly
      */
     public function testCacheComponent()
     {
         $this->assertInstanceOf(
             Cache::class,
-            $this->module->getCache()
+            Force::getInstance()->getCache()
         );
 
         $this->assertInstanceOf(
             Cache::class,
-            $this->module->cache
+            Force::getInstance()->cache
         );
     }
 
-//
-//    /**
-//     * Test the component is set correctly
-//     */
-//    public function testObjectAssociationsComponent()
-//    {
-//        $this->assertInstanceOf(
-//            ObjectAssociations::class,
-//            $this->module->getObjectAssociations()
-//        );
-//
-//        $this->assertInstanceOf(
-//            ObjectAssociations::class,
-//            $this->module->objectAssociations
-//        );
-//    }
+    /**
+     * Test the 'Connections' component is set correctly
+     */
+    public function testConnectionsComponent()
+    {
+        $this->assertInstanceOf(
+            Connections::class,
+            Force::getInstance()->getConnections()
+        );
 
-//    /**
-//     * Test the component is set correctly
-//     */
-//    public function testObjectsFieldComponent()
-//    {
-//        $this->assertInstanceOf(
-//            ObjectsField::class,
-//            $this->module->getObjectsField()
-//        );
-//
-//        $this->assertInstanceOf(
-//            ObjectsField::class,
-//            $this->module->objectsField
-//        );
-//    }
+        $this->assertInstanceOf(
+            Connections::class,
+            Force::getInstance()->connections
+        );
+    }
 
     /**
-     * Test the component is set correctly
+     * Test the 'Logger' component is set correctly
      */
     public function testPSR3Component()
     {
         $this->assertInstanceOf(
             Logger::class,
-            $this->module->getPsrLogger()
+            Force::getInstance()->getPsrLogger()
         );
 
         $this->assertInstanceOf(
             Logger::class,
-            $this->module->psr3Logger
+            Force::getInstance()->psr3Logger
         );
     }
 
-    // Todo - Travis php@7.2 fails
-//    /**
-//     * Test the component is set correctly
-//     */
-//    public function testResourcesComponent()
-//    {
-//        $this->assertInstanceOf(
-//            Resources::class,
-//            $this->module->getResources()
-//        );
-//
-//        $this->assertInstanceOf(
-//            Resources::class,
-//            $this->module->resources
-//        );
-//    }
-//
-//    /**
-//     * Test the component is set correctly
-//     */
-//    public function testTransformersComponent()
-//    {
-//        $this->assertInstanceOf(
-//            Transformers::class,
-//            $this->module->getTransformers()
-//        );
-//
-//        $this->assertInstanceOf(
-//            Transformers::class,
-//            $this->module->transformers
-//        );
-//    }
+    /**
+     * Test the 'CP' module is set correctly
+     */
+    public function testCpModule()
+    {
+        $this->assertInstanceOf(
+            Cp::class,
+            Force::getInstance()->getCp()
+        );
+    }
 }

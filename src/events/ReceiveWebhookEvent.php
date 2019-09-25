@@ -20,5 +20,4 @@ class ReceiveWebhookEvent extends Event
      * @var array
      */
     public $data;
-
 }

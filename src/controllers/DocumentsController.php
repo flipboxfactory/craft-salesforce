@@ -85,7 +85,8 @@ class DocumentsController extends AbstractController
             throw new UnauthorizedHttpException(
                 Craft::t(
                     'salesforce',
-                    $event->unauthorizedMessage)
+                    $event->unauthorizedMessage
+                )
             );
         }
 

@@ -50,7 +50,8 @@ class WebhookAuth extends AuthMethod
         // Header schema is a match, but no token or invalid token
         if (!isset($matches[1]) || $matches[1] !== Force::getInstance()->getSettings()->getWebHookToken()) {
             Force::error(
-                sprintf("Unauthorized: [%s]",
+                sprintf(
+                    "Unauthorized: [%s]",
                     Json::encode([
                         'IP Address' => Craft::$app->getRequest()->getUserIP(),
                         'Operating System' => Craft::$app->getRequest()->getClientOs(),

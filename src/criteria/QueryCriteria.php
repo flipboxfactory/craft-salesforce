@@ -25,7 +25,7 @@ class QueryCriteria extends \Flipbox\Salesforce\Criteria\QueryCriteria
      */
     public function setHandle(string $handle)
     {
-        if(null !== ($record = SOQL::findOne(['handle' => $handle]))) {
+        if (null !== ($record = SOQL::findOne(['handle' => $handle]))) {
             $this->setQuery($record);
         }
 
@@ -38,7 +38,7 @@ class QueryCriteria extends \Flipbox\Salesforce\Criteria\QueryCriteria
      */
     public function setId(int $id)
     {
-        if(null !== ($record = SOQL::findOne(['id' => $id]))) {
+        if (null !== ($record = SOQL::findOne(['id' => $id]))) {
             $this->setQuery($record);
         }
 
