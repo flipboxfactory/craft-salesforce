@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## Unreleased
+## 1.2.0 - 2019-09-25
 ### Added
 - Attachment download capabilities
 - Webhook processing capabilities (to trigger actions from external sources).
