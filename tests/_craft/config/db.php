@@ -18,7 +18,7 @@ $config = [
     'port' => getenv('DB_PORT')
 ];
 
-if (false !== ($password = getenv("DB_PASSWORD"))) {
+if ($password = getenv("DB_PASSWORD")) {
     $config['password'] = $password;
 }
 
