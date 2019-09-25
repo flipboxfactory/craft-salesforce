@@ -12,7 +12,7 @@
     "yii2"
   ],
   "require": {
-    "craftcms/cms": "^3.2",
+    "craftcms/cms": "^3.0.14",
     "flipboxdigital/salesforce": "^3.4",
     "flipboxfactory/craft-ember": "^2.1",
     "flipboxfactory/craft-integration": "^2.2",
