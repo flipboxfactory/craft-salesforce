@@ -8,6 +8,11 @@
 {% endblock %}
 
 {% set content %}
+    {% if not types|length %}
+        <div class="alert alert-danger">
+            <strong>Attention:</strong> Unable to find a Connection Provider.  Reference the docs for help: <a href="https://salesforce.flipboxfactory.com/settings/authorizing.html#providers">Installing a Connection Provider</a>
+        </div>
+    {% endif %}
     <table id="connections" class="data fullwidth collapsible">
         <thead>
             <th scope="col">{{ "Name"|t('salesforce') }}</th>

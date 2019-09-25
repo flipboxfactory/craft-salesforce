@@ -14,6 +14,7 @@ use flipbox\craft\ember\helpers\UrlHelper;
 use flipbox\craft\salesforce\cp\Cp as CpModule;
 use flipbox\craft\salesforce\Force;
 use flipbox\craft\salesforce\records\Connection;
+use flipbox\craft\salesforce\web\assets\base\Base;
 use yii\base\DynamicModel;
 
 /**
@@ -135,6 +136,10 @@ abstract class AbstractController extends Controller
     protected function baseVariables(array &$variables = [])
     {
         $module = Force::getInstance();
+
+        Craft::$app->getView()->registerAssetBundle(
+            Base::class
+        );
 
         $title = Force::t("Salesforce");
 

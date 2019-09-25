@@ -57,9 +57,9 @@ return [
 ## Pro-Tip
 #### How to handle Salesforce Sandbox Instances
 We insist on using them during development and testing.  As your Craft project progresses through environments, configure
-the connection using [Overrides] (depending on the connection provider) to update credentials and endpoints.
+the connection using [Overrides](#overrides) (depending on the connection provider) to update credentials and endpoints.
 
 #### Which version should I use?
 Use the latest most stable version available to your instance.  The version must be entered with a lowercase 'v' prefixed to it.  Ex: `v45.0`.
-[Here is a hand reference](https://help.salesforce.com/articleView?id=000334996&type=1&mode=1). 
+[Here is a handy reference to determine your API Version](https://help.salesforce.com/articleView?id=000334996&type=1&mode=1). 
 
