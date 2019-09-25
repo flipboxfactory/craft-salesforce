@@ -29,7 +29,15 @@ module.exports = {
                         ['/', 'Introduction'],
                         ['/requirements', 'Requirements'],
                         ['/installation', 'Installation / Upgrading'],
+
                         ['/support', 'Support'],
+                    ]
+                },
+                {
+                    title: 'Settings',
+                    collapsable: false,
+                    children: [
+                        ['/settings/authorizing', 'Connecting to Salesforce'],
                     ]
                 }
             ]
