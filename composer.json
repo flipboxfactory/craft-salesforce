@@ -13,7 +13,7 @@
   ],
   "require": {
     "craftcms/cms": "^3.2",
-    "flipboxdigital/salesforce": "^3.3",
+    "flipboxdigital/salesforce": "^3.4",
     "flipboxfactory/craft-ember": "^2.1",
     "flipboxfactory/craft-integration": "^2.2",
     "flipboxfactory/craft-psr3": "^1.1"
