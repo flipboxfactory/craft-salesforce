@@ -1,6 +1,6 @@
 Changelog
 =========
-## Unreleased
+## 1.3.0 - 2019-9-30
 ### Added
 - Attachment download capabilities
 
