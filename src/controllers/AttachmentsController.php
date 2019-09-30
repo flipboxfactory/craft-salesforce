@@ -35,14 +35,14 @@ class AttachmentsController extends AbstractController
      * @throws \yii\web\HttpException
      * @throws \yii\web\RangeNotSatisfiableHttpException
      */
-    public function actionDownload(string $id = null)
+    public function actionDownload(string $id = null, bool $canDownload = null, bool $inline = false)
     {
-        if (!Force::getInstance()->getSettings()->enableAttachmentDownloads) {
+        if ($canDownload !== true || !Force::getInstance()->getSettings()->enableDocumentDownloads) {
             throw new UnauthorizedHttpException("Unable to download attachment.");
         }
 
         $id = $id ?? Craft::$app->getRequest()->getRequiredBodyParam('id');
-        $inline = (bool) Craft::$app->getRequest()->getParam('inline', false);
+        $inline = (bool) ($inline ?? Craft::$app->getRequest()->getParam('inline', $inline));
 
         $result = (new ObjectCriteria())
             ->setObject('Attachment')
@@ -78,7 +78,8 @@ class AttachmentsController extends AbstractController
         $event = new DownloadAttachmentEvent([
             'object' => $object,
             'fileName' => $object['Name'],
-            'fileContents' => $result->getBody()->getContents()
+            'fileContents' => $result->getBody()->getContents(),
+            'canDownload' => $canDownload
         ]);
 
         $this->trigger(

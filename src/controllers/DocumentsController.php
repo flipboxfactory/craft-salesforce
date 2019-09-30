@@ -28,6 +28,8 @@ class DocumentsController extends AbstractController
 
     /**
      * @param string|null $id
+     * @param bool $inline
+     * @param bool|null $canDownload
      * @return \craft\web\Response|\yii\console\Response
      * @throws NotFoundHttpException
      * @throws UnauthorizedHttpException
@@ -35,14 +37,14 @@ class DocumentsController extends AbstractController
      * @throws \yii\web\HttpException
      * @throws \yii\web\RangeNotSatisfiableHttpException
      */
-    public function actionDownload(string $id = null)
+    public function actionDownload(string $id = null, bool $canDownload = null, bool $inline = false)
     {
-        if (!Force::getInstance()->getSettings()->enableDocumentDownloads) {
-            throw new UnauthorizedHttpException("Unable to download document.");
+        if ($canDownload !== true || !Force::getInstance()->getSettings()->enableDocumentDownloads) {
+            throw new UnauthorizedHttpException("Unable to download attachment.");
         }
 
         $id = $id ?? Craft::$app->getRequest()->getRequiredBodyParam('id');
-        $inline = (bool) Craft::$app->getRequest()->getParam('inline', false);
+        $inline = (bool) ($inline ?? Craft::$app->getRequest()->getParam('inline', $inline));
 
         $result = (new ObjectCriteria())
             ->setObject('ContentVersion')
@@ -78,7 +80,8 @@ class DocumentsController extends AbstractController
         $event = new DownloadDocumentEvent([
             'object' => $object,
             'fileName' => $object['Title'] . '.' . strtolower($object['FileExtension']),
-            'fileContents' => $result->getBody()->getContents()
+            'fileContents' => $result->getBody()->getContents(),
+            'canDownload' => $canDownload
         ]);
 
         $this->trigger(
