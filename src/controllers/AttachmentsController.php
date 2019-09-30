@@ -37,7 +37,7 @@ class AttachmentsController extends AbstractController
      */
     public function actionDownload(string $id = null, bool $canDownload = null, bool $inline = false)
     {
-        if ($canDownload !== true || !Force::getInstance()->getSettings()->enableDocumentDownloads) {
+        if ($canDownload !== true && !Force::getInstance()->getSettings()->enableDocumentDownloads) {
             throw new UnauthorizedHttpException("Unable to download attachment.");
         }
 
