@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## Unreleased
+## 1.3.1 - 2019-9-30
 ### Changed
 - Disabled attachment/document downloads by default.
 
