@@ -14,6 +14,7 @@ use flipbox\craft\ember\controllers\AbstractController;
 use flipbox\craft\salesforce\criteria\ObjectCriteria;
 use flipbox\craft\salesforce\criteria\UrlCriteria;
 use flipbox\craft\salesforce\events\DownloadAttachmentEvent;
+use flipbox\craft\salesforce\Force;
 use yii\web\NotFoundHttpException;
 use yii\web\UnauthorizedHttpException;
 
@@ -36,6 +37,10 @@ class AttachmentsController extends AbstractController
      */
     public function actionDownload(string $id = null)
     {
+        if (!Force::getInstance()->getSettings()->enableAttachmentDownloads) {
+            throw new UnauthorizedHttpException("Unable to download attachment.");
+        }
+
         $id = $id ?? Craft::$app->getRequest()->getRequiredBodyParam('id');
         $inline = (bool) Craft::$app->getRequest()->getParam('inline', false);
 

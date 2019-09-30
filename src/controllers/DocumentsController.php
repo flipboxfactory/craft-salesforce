@@ -14,6 +14,7 @@ use flipbox\craft\ember\controllers\AbstractController;
 use flipbox\craft\salesforce\criteria\ObjectCriteria;
 use flipbox\craft\salesforce\criteria\UrlCriteria;
 use flipbox\craft\salesforce\events\DownloadDocumentEvent;
+use flipbox\craft\salesforce\Force;
 use yii\web\NotFoundHttpException;
 use yii\web\UnauthorizedHttpException;
 
@@ -36,6 +37,10 @@ class DocumentsController extends AbstractController
      */
     public function actionDownload(string $id = null)
     {
+        if (!Force::getInstance()->getSettings()->enableDocumentDownloads) {
+            throw new UnauthorizedHttpException("Unable to download document.");
+        }
+
         $id = $id ?? Craft::$app->getRequest()->getRequiredBodyParam('id');
         $inline = (bool) Craft::$app->getRequest()->getParam('inline', false);
 

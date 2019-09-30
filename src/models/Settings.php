@@ -31,6 +31,16 @@ class Settings extends Model
     public $environmentTablePostfix = '';
 
     /**
+     * @var bool
+     */
+    public $enableDocumentDownloads = false;
+
+    /**
+     * @var bool
+     */
+    public $enableAttachmentDownloads = false;
+
+    /**
      * @var string
      */
     private $defaultCache = Cache::APP_CACHE;
@@ -130,6 +140,8 @@ class Settings extends Model
             parent::attributes(),
             [
                 'defaultConnection',
+                'enableDocumentDownloads',
+                'enableAttachmentDownloads',
                 'defaultCache',
                 'webHookToken'
             ]
@@ -147,6 +159,8 @@ class Settings extends Model
                 [
                     [
                         'defaultConnection',
+                        'enableDocumentDownloads',
+                        'enableAttachmentDownloads',
                         'defaultCache',
                         'webHookToken'
                     ],
