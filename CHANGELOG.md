@@ -1,5 +1,14 @@
 Changelog
 =========
+## Unreleased
+### Changed
+- Methods `flipbox\craft\salesforce\fields\Objects::pullFromSalesforce` and `flipbox\craft\salesforce\fields\Objects::pushToSalesforce` are now publicly accessible.
+
+### Changed
+- When syncing an object via the field type, checks were added to ensure a Case Safe Object Id is used.
+
+### Fixed
+- Error thrown when attempting to create a new element from a sync request.
 
 ## 1.3.1 - 2019-9-30
 ### Changed

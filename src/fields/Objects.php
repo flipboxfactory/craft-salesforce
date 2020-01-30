@@ -22,6 +22,7 @@ use flipbox\craft\salesforce\fields\actions\SyncItemFrom;
 use flipbox\craft\salesforce\fields\actions\SyncItemTo;
 use flipbox\craft\salesforce\fields\actions\SyncTo;
 use flipbox\craft\salesforce\Force;
+use flipbox\craft\salesforce\helpers\ObjectHelper;
 use flipbox\craft\salesforce\helpers\TransformerHelper;
 use flipbox\craft\salesforce\records\ObjectAssociation;
 use flipbox\craft\salesforce\transformers\PopulateElementErrorsFromResponse;
@@ -287,7 +288,7 @@ class Objects extends Integrations
      * @throws \Throwable
      * @throws \flipbox\craft\integration\exceptions\ConnectionNotFound
      */
-    protected function pushToSalesforce(
+    public function pushToSalesforce(
         ElementInterface $element,
         string $objectId = null,
         $transformer = null
@@ -350,7 +351,7 @@ class Objects extends Integrations
      * @throws \craft\errors\ElementNotFoundException
      * @throws \yii\base\Exception
      */
-    protected function pullFromSalesforce(
+    public function pullFromSalesforce(
         ElementInterface $element,
         string $objectId = null,
         $transformer = null
@@ -389,19 +390,23 @@ class Objects extends Integrations
                 $response,
                 $element,
                 $this,
-                $id
+                &$id
             ]
         );
 
+        if (!Craft::$app->getElements()->saveElement($element)) {
+            return null;
+        }
+
         if ($objectId !== null) {
+            if (!ObjectHelper::isCaseSafeObjectId($id)) {
+                $id = $this->getObjectIdFromResponse($response);
+            }
+
             $this->addAssociation(
                 $element,
                 $id
             );
-        }
-
-        if (!Craft::$app->getElements()->saveElement($element)) {
-            return null;
         }
 
         return $response;
@@ -530,6 +535,8 @@ class Objects extends Integrations
      */
     protected function getObjectIdFromResponse(ResponseInterface $response)
     {
+        $response->getBody()->rewind();
+
         $data = Json::decodeIfJson(
             $response->getBody()->getContents()
         );
@@ -545,9 +552,13 @@ class Objects extends Integrations
      * @return bool|false|string|null
      */
     public function findObjectIdFromElementId(
-        int $elementId,
+        int $elementId = null,
         int $siteId = null
     ) {
+        if ($elementId === null) {
+            return null;
+        }
+
         if (!$objectId = ObjectAssociation::find()
             ->select(['objectId'])
             ->elementId($elementId)
@@ -578,9 +589,13 @@ class Objects extends Integrations
      * @return bool|false|string|null
      */
     public function findElementIdFromObjectId(
-        string $objectId,
+        string $objectId = null,
         int $siteId = null
     ) {
+        if ($objectId === null) {
+            return null;
+        }
+
         if (!$elementId = ObjectAssociation::find()
             ->select(['elementId'])
             ->objectId($objectId)
