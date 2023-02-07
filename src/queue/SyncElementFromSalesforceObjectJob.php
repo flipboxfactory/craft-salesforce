@@ -38,7 +38,7 @@ class SyncElementFromSalesforceObjectJob extends BaseJob implements \Serializabl
      * @inheritdoc
      * @return bool
      */
-    public function execute($queue)
+    public function execute($queue): void
     {
         $field = $this->getField();
         $element = $this->getElement();

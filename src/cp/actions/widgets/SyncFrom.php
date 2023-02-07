@@ -6,7 +6,7 @@
  * @link       https://www.flipboxfactory.com/software/force/
  */
 
-namespace flipbox\craft\salesforce\actions\widgets;
+namespace flipbox\craft\salesforce\cp\actions\widgets;
 
 use Craft;
 use craft\base\ElementInterface;

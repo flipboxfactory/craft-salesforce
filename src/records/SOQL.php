@@ -58,10 +58,9 @@ class SOQL extends ActiveRecordWithId implements DynamicQueryBuilderInterface
     /*******************************************
      * SETTINGS
      *******************************************/
-
     /**
      * @inheritdoc
-     * @throws \Twig_Error_Loader
+     * @throws \Twig\Error\LoaderError
      * @throws \yii\base\Exception
      */
     public function settingsHtml(): string
@@ -81,7 +80,7 @@ class SOQL extends ActiveRecordWithId implements DynamicQueryBuilderInterface
     /**
      * @inheritdoc
      */
-    public static function find()
+    public static function find(): \craft\db\ActiveQuery
     {
         /** @noinspection PhpUnhandledExceptionInspection */
         /** @noinspection PhpIncompatibleReturnTypeInspection */

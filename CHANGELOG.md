@@ -1,5 +1,9 @@
 Changelog
-=========
+
+## 2.0.0 - 2023-02-06
+### Added
+- Craft 4.0 support
+- 
 ## 1.3.2 - 2020-01-29
 ### Changed
 - Methods `flipbox\craft\salesforce\fields\Objects::pullFromSalesforce` and `flipbox\craft\salesforce\fields\Objects::pushToSalesforce` are now publicly accessible.

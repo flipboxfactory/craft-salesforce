@@ -23,7 +23,7 @@ class WebhooksController extends AbstractController
     /**
      * @inheritdoc
      */
-    protected $allowAnonymous = ['process'];
+    protected array|int|bool $allowAnonymous = ['process'];
 
     /**
      * @inheritdoc

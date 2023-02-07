@@ -142,7 +142,7 @@ class Objects extends Integrations
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return array_merge(
             parent::rules(),
