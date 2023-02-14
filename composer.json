@@ -14,7 +14,7 @@
   "require": {
     "php": ">=8.0",
     "craftcms/cms": "~4.0",
-    "flipboxdigital/salesforce": "dev-feature/php8",
+    "flipboxdigital/salesforce": "~4.0",
     "flipboxfactory/craft-ember": "~3.0",
     "flipboxfactory/craft-integration": "~3.0",
     "flipboxfactory/craft-psr3": "~2.0"
