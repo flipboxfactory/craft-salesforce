@@ -30,4 +30,12 @@ class UpdateConnection extends UpdateIntegrationConnection
         parent::populate($record);
         return $this->populateSettings($record);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function run($connection)
+    {
+        return parent::run($connection);
+    }
 }
