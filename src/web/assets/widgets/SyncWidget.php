@@ -23,7 +23,7 @@ class SyncWidget extends AssetBundle
     public function init()
     {
         $this->js = [
-            'js/Sync' . $this->dotJs()
+            'js/Sync.min.js'
         ];
         parent::init();
     }

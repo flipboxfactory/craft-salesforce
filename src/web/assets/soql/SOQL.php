@@ -23,7 +23,7 @@ class SOQL extends AssetBundle
     public function init()
     {
         $this->js = [
-            'js/SOQL' . $this->dotJs()
+            'js/SOQL.min.js'
         ];
 
         $this->css = [
