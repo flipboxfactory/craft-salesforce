@@ -35,9 +35,9 @@
 
 {% block details %}
     <form method="get">
-        <div class="meta read-only">
+        <div class="meta">
             {{ forms.selectField({
-                label: "Salesforce Object"|t('salesforce'),
+                label: "Object"|t('salesforce'),
                 id: 'object',
                 name: 'object',
                 options: objectOptions,
@@ -46,9 +46,7 @@
             }) }}
         </div>
 
-        <hr />
-
-        <div class="meta">
+        <div>
             <input type="submit" value="Describe" class="btn submit right"/>
         </div>
     </form>

@@ -1,6 +1,10 @@
 Changelog
 
-## 5.0.0 - 2023-02-06
+## 5.0.1 - 2025-11-03
+### Fixed
+- Minor control panel styling
+
+## 5.0.0 - 2025-11-03
 ### Added
 - Craft 5.0 support
 
