@@ -24,7 +24,7 @@ trait TransformResponseErrorsTrait
      * @param array $data
      * @return DynamicModel
      */
-    protected function transformResponseErrors(ResponseInterface $response, array $data): DynamicModel
+    protected function transformResponseErrors(ResponseInterface $response, array|null $data): DynamicModel
     {
         $errors = call_user_func_array(
             new InterpretResponseErrors(),

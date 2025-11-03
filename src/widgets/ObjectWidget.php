@@ -12,6 +12,7 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\base\Widget;
 use craft\db\Query;
+use craft\db\Table;
 use flipbox\craft\salesforce\fields\Objects;
 use flipbox\craft\salesforce\Force;
 use flipbox\craft\salesforce\web\assets\widgets\SyncWidget;
@@ -176,22 +177,27 @@ class ObjectWidget extends Widget
      */
     private function createFieldQuery(): Query
     {
+
         return (new Query())
             ->select([
                 'fields.id',
                 'fields.dateCreated',
                 'fields.dateUpdated',
-                'fields.groupId',
+                'fields.dateDeleted',
+//                'fields.groupId',
                 'fields.name',
                 'fields.handle',
                 'fields.context',
+                'fields.columnSuffix',
                 'fields.instructions',
+                'fields.searchable',
                 'fields.translationMethod',
                 'fields.translationKeyFormat',
                 'fields.type',
-                'fields.settings'
+                'fields.settings',
+                'fields.uid'
             ])
-            ->from(['{{%fields}} fields'])
+            ->from([Table::FIELDS . ' fields'])
             ->orderBy(['fields.name' => SORT_ASC])
             ->andWhere([
                 'fields.type' => Objects::class

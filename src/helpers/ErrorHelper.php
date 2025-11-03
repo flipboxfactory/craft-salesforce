@@ -46,11 +46,15 @@ class ErrorHelper
     }
 
     /**
-     * @param array $errors
+     * @param array|null|string $errors
      * @return bool
      */
-    public static function hasSessionExpired(array $errors): bool
+    public static function hasSessionExpired(array|null|string $errors): bool
     {
+        if (!$errors) {
+            return false;
+        }
+
         foreach ($errors as $error) {
             if (ArrayHelper::getValue($error, 'errorCode') === 'INVALID_SESSION_ID' &&
                 ArrayHelper::getValue($error, 'message') === 'Session expired or invalid'

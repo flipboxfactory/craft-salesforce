@@ -31,6 +31,13 @@ class DynamicModelResponse
         );
 
         if ($response->getStatusCode() === 200) {
+            if (!$data) {
+                $response->getBody()->rewind();
+
+                var_dump($response);
+                return new DynamicModel();
+            }
+
             return new DynamicModel(array_keys($data), $data);
         }
 

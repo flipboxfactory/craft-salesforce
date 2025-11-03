@@ -44,11 +44,11 @@ class SyncElementFromSalesforceObjectJob extends BaseJob implements \Serializabl
         $element = $this->getElement();
 
         if (!$field instanceof Objects || !$element instanceof ElementInterface) {
-            return false;
+            return;
         }
 
         /** @noinspection PhpUnhandledExceptionInspection */
-        return $field->syncFromSalesforce(
+        $field->syncFromSalesforce(
             $element,
             $this->objectId,
             $this->transformer

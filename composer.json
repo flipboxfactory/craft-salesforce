@@ -1,7 +1,7 @@
 {
   "name": "flipboxfactory/craft-salesforce",
   "description": "Salesforce Integration for Craft CMS",
-  "version": "2.0.0",
+  "version": "5.0.0",
   "type": "craft-plugin",
   "license": "proprietary",
   "keywords": [
@@ -13,11 +13,11 @@
   ],
   "require": {
     "php": ">=8.0",
-    "craftcms/cms": "~4.0",
-    "flipboxdigital/salesforce": "~4.0",
-    "flipboxfactory/craft-ember": "~3.0",
-    "flipboxfactory/craft-integration": "~3.0",
-    "flipboxfactory/craft-psr3": "~2.0"
+    "craftcms/cms": "^5.0",
+    "flipboxdigital/salesforce": "^5.0",
+    "flipboxfactory/craft-ember": "^5.0",
+    "flipboxfactory/craft-integration": "^5.0",
+    "flipboxfactory/craft-psr3": "^2.1"
   },
   "require-dev": {
     "codeception/codeception": "^5.0",

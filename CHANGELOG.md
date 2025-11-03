@@ -1,5 +1,9 @@
 Changelog
 
+## 5.0.0 - 2023-02-06
+### Added
+- Craft 5.0 support
+
 ## 2.0.0 - 2023-02-06
 ### Added
 - Craft 4.0 support
@@ -38,7 +42,7 @@ Changelog
 
 ## 1.0.3 - 2019-02-20
 ### Added
-- Criteria template variables to create criteria used to access date `craft.salesforce.criteria.query`, `craft.salesforce.criteria.object`, `craft.salesforce.criteria.search` 
+- Criteria template variables to create criteria used to access date `craft.salesforce.criteria.query`, `craft.salesforce.criteria.object`, `craft.salesforce.criteria.search`
 - `\flipbox\craft\salesforce\records\SOQL::fetch()` to execute the SOQL query API call.
 
 ## 1.0.2 - 2019-01-29
@@ -125,7 +129,7 @@ Changelog
 - The default connection and cache strategy can be set via settings
 
 ### Removed
-- The following plugins settings: instanceUrl, sObjectViewUrlString, sObjectListUrlString, 
+- The following plugins settings: instanceUrl, sObjectViewUrlString, sObjectListUrlString,
 
 ## 1.0.0-beta.3 - 2018-04-27
 ### Fixed
@@ -135,7 +139,7 @@ Changelog
 ## 1.0.0-beta.2 - 2018-04-26
 ### Fixed
 - CP notifications were not being displayed after field actions occurred
-- Instance where an environment 
+- Instance where an environment
 - Sync actions and transformations
 
 ## 1.0.0-beta.1 - 2018-04-26

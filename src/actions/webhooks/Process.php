@@ -43,7 +43,7 @@ class Process extends Action
     /**
      * @inheritdoc
      */
-    protected function performAction(array $data = []): bool
+    protected function performAction($data): bool
     {
         if (!$data) {
             $this->handleFailResponse("No data.");
@@ -58,6 +58,6 @@ class Process extends Action
             );
         }
 
-        $this->handleSuccessResponse(null);
+        return $this->handleSuccessResponse(null);
     }
 }

@@ -19,7 +19,7 @@ class InterpretResponseErrors
     /**
      * @inheritdoc
      */
-    public function __invoke(array $data): array
+    public function __invoke(array|null $data): array
     {
         if ($data === null) {
             return [

@@ -181,6 +181,7 @@ class Force extends Plugin
     /**
      * @inheritdoc
      * @throws \yii\base\ExitException
+     * @noinspection PhpInconsistentReturnPointsInspection
      */
     public function getSettingsResponse(): mixed
     {
